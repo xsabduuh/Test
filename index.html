@@ -9,21 +9,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
   <style>
     :root {
-      --bg: #0a0a0f;
-      --card: #16162a;
-      --border: #2a2a40;
-      --text: #ecedf0;
-      --secondary: #8b8b96;
-      --accent: #3b82f6;
-      --accent2: #2563eb;
-      --green: #10b981;
-      --red: #ef4444;
+      --bg: #000000;
+      --card: #0a0a0f;
+      --border: #1c1c24;
+      --text: #f5f5f7;
+      --secondary: #8e8e93;
+      --accent: #0a84ff;
+      --accent2: #409cff;
+      --green: #30d158;
+      --red: #ff453a;
       --radius: 14px;
       --font: -apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif;
       --mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
-      --shadow: 0 8px 30px rgba(0,0,0,0.6);
-      --note-bg: #1c1c30;
-      --project-bg: #24243a;
+      --shadow: 0 2px 20px rgba(0,0,0,0.8);
+      --note-bg: #12121a;
+      --project-bg: #1a1a24;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html { height: 100%; overflow: hidden; }
@@ -39,9 +39,8 @@
       -webkit-tap-highlight-color: transparent;
     }
     .app { flex: 1; display: flex; flex-direction: column; min-height: 100dvh; }
-    ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+    ::-webkit-scrollbar{width:0; height:0}
 
-    /* ---- HOME VIEW ---- */
     .home-view, .trash-view { display: none; flex-direction: column; flex: 1; padding: 16px 16px 0; }
     .home-view.active, .trash-view.active { display: flex; }
     .home-header, .trash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
@@ -57,9 +56,9 @@
       display: flex; align-items: center; justify-content: center;
       cursor: pointer; transition: all 0.2s ease;
     }
-    .home-new-btn:hover, .home-project-btn:hover { background: #2a2a44; border-color: var(--accent); transform: scale(1.05); }
-    .home-project-btn { color: var(--green); border-color: rgba(16,185,129,0.25); }
-    .home-project-btn:hover { border-color: var(--green); background: rgba(16,185,129,0.08); }
+    .home-new-btn:hover, .home-project-btn:hover { background: #1a1a2e; border-color: var(--accent); transform: scale(1.05); }
+    .home-project-btn { color: var(--green); border-color: rgba(48,209,88,0.25); }
+    .home-project-btn:hover { border-color: var(--green); background: rgba(48,209,88,0.08); }
 
     .home-tools { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
     .search-input {
@@ -94,19 +93,19 @@
       border-radius: var(--radius); padding: 16px;
       cursor: pointer; transition: all 0.2s; position: relative;
     }
-    .note-card-home:hover { border-color: var(--accent); box-shadow: 0 6px 16px rgba(59,130,246,0.12); }
-    .note-card-home:active { background: #262640; }
+    .note-card-home:hover { border-color: var(--accent); box-shadow: 0 6px 16px rgba(10,132,255,0.12); }
+    .note-card-home:active { background: #1e1e2c; }
     .note-card-home .title { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; padding-right: 24px; }
     .note-card-home .lang {
       font-size: 0.65rem; text-transform: uppercase;
-      color: rgba(59,130,246,0.7);
-      background: rgba(59,130,246,0.08);
+      color: rgba(10,132,255,0.7);
+      background: rgba(10,132,255,0.08);
       padding: 2px 8px; border-radius: 6px;
     }
     .note-card-home .project-badge {
       font-size: 0.65rem; text-transform: uppercase;
-      color: rgba(16,185,129,0.7);
-      background: rgba(16,185,129,0.08);
+      color: rgba(48,209,88,0.7);
+      background: rgba(48,209,88,0.08);
       padding: 2px 8px; border-radius: 6px;
     }
     .pin-btn {
@@ -137,34 +136,30 @@
     /* ---- EDITOR VIEW ---- */
     .editor-view { display: none; flex-direction: column; flex: 1; }
     .editor-view.active { display: flex; }
-    .navbar { padding: 8px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); min-height: 52px; background: #0d0d18; }
+    .navbar { padding: 8px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); min-height: 52px; background: #000; }
     .back-btn { background: none; border: none; color: var(--accent); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
     .nav-title-input { flex: 1; background: transparent; border: none; font-size: 1.15rem; font-weight: 600; color: var(--text); outline: none; }
     .nav-title-input::placeholder { color: var(--secondary); }
 
-    /* Professional tab bar with file type indicators */
+    /* Professional scrollable tab bar - AMOLED optimized */
     .tabs-bar {
-      display: flex; align-items: stretch; gap: 0;
-      background: #0c0c1a; border-bottom: 1px solid #252540;
-      padding: 0 8px; overflow-x: auto; min-height: 38px;
+      display: flex; align-items: stretch; background: #000; border-bottom: 1px solid #1c1c24;
+      overflow-x: auto; overflow-y: hidden; white-space: nowrap;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      padding: 0 4px; min-height: 40px;
     }
+    .tabs-bar::-webkit-scrollbar { display: none; }
     .tab {
-      display: flex; align-items: center; gap: 8px;
-      padding: 0 14px; height: 38px;
-      font-size: 0.8rem; font-weight: 500;
-      color: var(--secondary);
-      background: transparent;
-      border: 1px solid transparent;
-      border-bottom: 2px solid transparent;
-      cursor: pointer; white-space: nowrap;
-      transition: all 0.15s ease;
-      margin-right: 2px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 0 16px; height: 40px; font-size: 0.8rem; font-weight: 500;
+      color: var(--secondary); background: transparent;
+      border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; transition: all 0.15s; flex-shrink: 0;
     }
-    .tab:hover { color: #d0d0e0; background: rgba(255,255,255,0.03); border-bottom-color: rgba(255,255,255,0.1); }
-    .tab.active { color: #fff; background: #1a1a32; border-bottom: 2px solid var(--accent); font-weight: 600; }
+    .tab:hover { color: #d0d0e0; background: rgba(255,255,255,0.03); }
+    .tab.active { color: #fff; background: #1a1a2e; border-bottom-color: var(--accent); font-weight: 600; }
     .file-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #555;
+      width: 8px; height: 8px; border-radius: 50%; background: #555;
     }
     .file-dot.html { background: #e44d26; }
     .file-dot.css { background: #264de4; }
@@ -176,17 +171,17 @@
       width: 18px; height: 18px; border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; color: inherit; opacity: 0;
-      transition: opacity 0.15s, background 0.15s; line-height: 1; margin-left: 2px;
+      transition: opacity 0.15s, background 0.15s; line-height: 1;
+      flex-shrink: 0;
     }
     .tab:hover .tab-close { opacity: 0.6; }
     .tab .tab-close:hover { opacity: 1; background: rgba(255,255,255,0.12); }
     .add-file-btn {
       display: flex; align-items: center; gap: 6px;
-      padding: 0 14px; height: 38px;
-      background: transparent; border: none;
+      padding: 0 16px; height: 40px; background: transparent; border: none;
       color: var(--secondary); font-size: 0.8rem; font-weight: 500;
       cursor: pointer; white-space: nowrap; transition: all 0.2s;
-      margin-left: auto;
+      flex-shrink: 0; position: sticky; right: 0; background: #000;
     }
     .add-file-btn:hover { color: #fff; background: rgba(255,255,255,0.04); }
 
@@ -199,7 +194,7 @@
       overflow: auto; border: none; outline: none; background: transparent;
     }
     .code-textarea { color: transparent; caret-color: var(--accent); resize: none; z-index: 2; }
-    .code-textarea::selection { background: rgba(59,130,246,0.35); }
+    .code-textarea::selection { background: rgba(10,132,255,0.35); }
     .code-preview { pointer-events: none; z-index: 1; }
     .code-preview code { background: transparent !important; padding: 0 !important; }
     .line-numbers {
@@ -217,7 +212,7 @@
     .bottom-toolbar {
       display: flex; align-items: center; gap: 8px;
       padding: 10px 16px; border-top: 1px solid var(--border);
-      background: #0a0a14; flex-wrap: wrap;
+      background: #000; flex-wrap: wrap;
     }
     .lang-picker {
       background: var(--card); border: 1px solid var(--border);
@@ -232,10 +227,10 @@
       transition: all 0.15s;
     }
     .tool-btn:active { transform: scale(0.95); }
-    .tool-btn.copy { color: var(--green); border-color: rgba(16,185,129,0.3); }
-    .tool-btn.copy.copied { background: rgba(16,185,129,0.2); border-color: var(--green); }
+    .tool-btn.copy { color: var(--green); border-color: rgba(48,209,88,0.3); }
+    .tool-btn.copy.copied { background: rgba(48,209,88,0.2); border-color: var(--green); }
     .tool-btn.save { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .tool-btn.delete { color: var(--red); border-color: rgba(239,68,68,0.3); }
+    .tool-btn.delete { color: var(--red); border-color: rgba(255,69,58,0.3); }
     .tool-btn svg { width: 16px; height: 16px; }
     .tool-btn.undo, .tool-btn.redo { color: var(--secondary); }
     .tool-btn.undo:disabled, .tool-btn.redo:disabled { opacity: 0.4; pointer-events: none; }
@@ -244,7 +239,7 @@
     .status-bar {
       padding: 4px 18px; display: flex; justify-content: space-between;
       font-size: 0.7rem; color: var(--secondary); font-family: var(--mono);
-      background: #0a0a14;
+      background: #000;
     }
 
     .toast-panel {
@@ -266,7 +261,6 @@
 <body>
 <div class="app" id="appRoot">
 
-  <!-- HOME VIEW -->
   <div class="home-view active" id="homeView">
     <div class="home-header">
       <span class="home-title">DevPath Notes</span>
@@ -307,7 +301,6 @@
     </div>
   </div>
 
-  <!-- TRASH VIEW -->
   <div class="trash-view" id="trashView">
     <div class="trash-header">
       <span class="trash-title">Trash</span>
@@ -320,7 +313,6 @@
     <div class="empty-notes" id="trashEmpty" style="display:none;">Trash is empty.</div>
   </div>
 
-  <!-- EDITOR VIEW -->
   <div class="editor-view" id="editorView">
     <div class="navbar">
       <button class="back-btn" id="editorBackBtn">
@@ -330,7 +322,7 @@
       <input type="text" class="nav-title-input" id="noteTitle" placeholder="Note title">
     </div>
     <div class="tabs-bar" id="tabsBar" style="display:none;">
-      <span id="tabsContainer" style="display:flex; align-items:stretch; flex:1;"></span>
+      <span id="tabsContainer" style="display:flex; align-items:stretch; flex:1 1 auto; overflow-x:auto; scrollbar-width:none;"></span>
       <button class="add-file-btn" id="addFileBtn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Add file
@@ -444,7 +436,7 @@
     $('toastPanel').appendChild(t); setTimeout(() => t.remove(), 2500);
   }
 
-  // ── STORAGE ──
+  // Storage
   function loadNotesFromStorage() {
     try { notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch (e) { notes = []; }
@@ -455,8 +447,7 @@
   function loadTrashFromStorage() {
     try { trash = JSON.parse(localStorage.getItem(TRASH_KEY)) || []; }
     catch (e) { trash = []; }
-    const now = Date.now();
-    const cutoff = now - TRASH_DAYS * 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - TRASH_DAYS * 24 * 60 * 60 * 1000;
     trash = trash.filter(item => item.deletedAt > cutoff);
     saveTrashToStorage();
   }
@@ -464,7 +455,7 @@
 
   function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,9); }
 
-  // ── HOME RENDERING ──
+  // Home rendering
   function renderHome() {
     const noteList = notes.filter(n => !n.files);
     const projectList = notes.filter(n => !!n.files);
@@ -475,7 +466,6 @@
         const q = searchTerm.toLowerCase();
         filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(q) || (n.content||'').toLowerCase().includes(q));
       }
-      // Sort pinned first, then updated desc
       filtered.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.updated - a.updated);
       return filtered;
     };
@@ -507,15 +497,13 @@
     grid.querySelectorAll('[data-del]').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
-        const id = btn.dataset.del;
-        moveToTrash(id);
+        moveToTrash(btn.dataset.del);
       });
     });
     grid.querySelectorAll('[data-pin]').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
-        const id = btn.dataset.pin;
-        togglePin(id);
+        togglePin(btn.dataset.pin);
       });
     });
   }
@@ -535,7 +523,6 @@
     const note = notes.find(n => n.id === id);
     if (!note) return;
     if (currentId === id) {
-      // If currently open, close editor first
       discardChangesAndClose();
     }
     trash.push({ id: generateId(), note: { ...note }, deletedAt: Date.now() });
@@ -546,13 +533,8 @@
     toast('Moved to trash');
   }
 
-  // ── TRASH VIEW ──
   function renderTrash() {
-    if (!trash.length) {
-      trashGrid.innerHTML = '';
-      trashEmpty.style.display = 'block';
-      return;
-    }
+    if (!trash.length) { trashGrid.innerHTML = ''; trashEmpty.style.display = 'block'; return; }
     trashEmpty.style.display = 'none';
     trash.sort((a,b) => b.deletedAt - a.deletedAt);
     trashGrid.innerHTML = trash.map(item => {
@@ -568,15 +550,13 @@
     trashGrid.querySelectorAll('[data-restore]').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
-        const trashId = btn.dataset.restore;
-        restoreFromTrash(trashId);
+        restoreFromTrash(btn.dataset.restore);
       });
     });
     trashGrid.querySelectorAll('[data-permadelete]').forEach(btn => {
       btn.addEventListener('click', e => {
         e.stopPropagation();
-        const trashId = btn.dataset.permadelete;
-        permanentlyDelete(trashId);
+        permanentlyDelete(btn.dataset.permadelete);
       });
     });
   }
@@ -587,44 +567,29 @@
     const restoredNote = { ...trash[idx].note, id: trash[idx].note.id || generateId() };
     notes.unshift(restoredNote);
     trash.splice(idx, 1);
-    saveNotesToStorage();
-    saveTrashToStorage();
-    renderTrash();
-    renderHome();
-    toast('Restored');
+    saveNotesToStorage(); saveTrashToStorage(); renderTrash(); renderHome(); toast('Restored');
   }
 
   function permanentlyDelete(trashId) {
     if (!confirm('Delete permanently?')) return;
     trash = trash.filter(t => t.id !== trashId);
-    saveTrashToStorage();
-    renderTrash();
-    toast('Permanently deleted');
+    saveTrashToStorage(); renderTrash(); toast('Permanently deleted');
   }
 
-  function timeAgo(timestamp) {
-    const seconds = Math.floor((Date.now() - timestamp) / 1000);
-    if (seconds < 60) return 'just now';
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
+  function timeAgo(ts) {
+    const sec = Math.floor((Date.now() - ts) / 1000);
+    if (sec < 60) return 'just now';
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m ago`;
+    const hrs = Math.floor(min / 60);
+    if (hrs < 24) return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
   }
 
-  function showTrash() {
-    homeView.classList.remove('active');
-    trashView.classList.add('active');
-    renderTrash();
-  }
-  function hideTrash() {
-    trashView.classList.remove('active');
-    homeView.classList.add('active');
-    renderHome();
-  }
+  function showTrash() { homeView.classList.remove('active'); trashView.classList.add('active'); renderTrash(); }
+  function hideTrash() { trashView.classList.remove('active'); homeView.classList.add('active'); renderHome(); }
 
-  // ── OPEN / CLOSE NOTES ──
+  // Open / Close
   function openNote(id) {
     if (previewVisible) togglePreview();
     const note = notes.find(n => n.id === id); if (!note) return;
@@ -639,10 +604,8 @@
       currentFiles = null; tabsBar.style.display = 'none';
       codeTextarea.value = note.content || ''; $('langPicker').value = note.lang || 'plaintext';
     }
-    homeView.classList.remove('active');
-    editorView.classList.add('active');
+    homeView.classList.remove('active'); editorView.classList.add('active');
     updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo();
-    // Do NOT focus to avoid keyboard popping up immediately
   }
 
   function createNewNote(isProject = false) {
@@ -665,39 +628,51 @@
     return { html:'html', css:'css', js:'javascript', jsx:'jsx', ts:'typescript', py:'python', sql:'sql', json:'json', sh:'bash' }[ext] || 'plaintext';
   }
 
+  function getFileDotClass(name) {
+    const ext = name.split('.').pop().toLowerCase();
+    return { html:'html', css:'css', js:'js', jsx:'js', ts:'js', py:'py', json:'json' }[ext] || 'txt';
+  }
+
   function renderTabs() {
     if (!isMultiFile || !currentFiles) return;
     tabsContainer.innerHTML = Object.keys(currentFiles).map(name => {
       const dotClass = getFileDotClass(name);
-      return `
-      <div class="tab ${name === activeFileName ? 'active' : ''}" data-file="${name}">
-        <span class="file-dot ${dotClass}"></span>
-        <span>${name}</span>
+      return `<div class="tab ${name === activeFileName ? 'active' : ''}" data-file="${name}">
+        <span class="file-dot ${dotClass}"></span><span>${name}</span>
         <span class="tab-close" data-close="${name}">&times;</span>
       </div>`;
     }).join('');
-    tabsContainer.querySelectorAll('.tab-close').forEach(closeBtn => {
-      closeBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        const fname = closeBtn.dataset.close;
-        if (confirm(`Delete ${fname}?`)) {
-          delete currentFiles[fname];
-          if (activeFileName === fname) activeFileName = Object.keys(currentFiles)[0] || 'index.html';
-          renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); pushToUndo();
-        }
-      });
-    });
+
+    // Attach ONE event per tab element (avoids double-click issue)
     tabsContainer.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', e => {
-        if (e.target.classList.contains('tab-close')) return;
+      tab.onclick = function(e) {
+        const closeBtn = e.target.closest('.tab-close');
+        if (closeBtn) {
+          e.stopPropagation();
+          const fname = closeBtn.dataset.close;
+          if (confirm(`Delete ${fname}?`)) {
+            delete currentFiles[fname];
+            if (activeFileName === fname) activeFileName = Object.keys(currentFiles)[0] || 'index.html';
+            renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); pushToUndo();
+          }
+          return;
+        }
         activeFileName = tab.dataset.file;
         renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo();
-      });
+      };
+      // Double-click to rename
+      tab.ondblclick = function(e) {
+        if (e.target.closest('.tab-close')) return;
+        const oldName = tab.dataset.file;
+        const newName = prompt('Rename file:', oldName);
+        if (!newName || newName === oldName) return;
+        if (currentFiles[newName]) { toast('File already exists'); return; }
+        currentFiles[newName] = currentFiles[oldName];
+        delete currentFiles[oldName];
+        if (activeFileName === oldName) activeFileName = newName;
+        renderTabs(); updateEditorContent(); refreshHighlight(); updateStats();
+      };
     });
-  }
-  function getFileDotClass(name) {
-    const ext = name.split('.').pop().toLowerCase();
-    return { html: 'html', css: 'css', js: 'js', jsx: 'js', ts: 'js', py: 'py', json: 'json' }[ext] || 'txt';
   }
 
   function buildCurrentNoteFromUI() {
@@ -745,7 +720,7 @@
     resetUndoRedo(); if (previewVisible) togglePreview(); tabsBar.style.display = 'none';
   }
 
-  // ── PREVIEW ──
+  // Preview
   function togglePreview() {
     previewVisible = !previewVisible;
     if (previewVisible) {
@@ -775,7 +750,7 @@
     }, 80);
   }
 
-  // ── UNDO / REDO ──
+  // Undo/Redo
   function resetUndoRedo() { undoStack=[]; redoStack=[]; currentSnapshot=codeTextarea.value; updateUndoButtons(); }
   function updateUndoButtons() { $('undoBtn').disabled=undoStack.length===0; $('redoBtn').disabled=redoStack.length===0; }
   function pushToUndo() { const val=codeTextarea.value; if(val!==currentSnapshot&&!isUndoRedo){undoStack.push(currentSnapshot);currentSnapshot=val;redoStack=[];updateUndoButtons();} }
@@ -790,12 +765,10 @@
   function updateStats(){ const code=codeTextarea.value; $('charCount').textContent=code.length+' chars'; $('lineCount').textContent='Ln '+code.split('\n').length; }
   function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-  // ── INIT ──
-  loadNotesFromStorage();
-  loadTrashFromStorage();
-  renderHome();
+  // Init
+  loadNotesFromStorage(); loadTrashFromStorage(); renderHome();
 
-  // ── EVENT LISTENERS ──
+  // Events
   $('homeNewBtn').addEventListener('click', openNewNote);
   $('homeProjectBtn').addEventListener('click', openNewProject);
   $('editorBackBtn').addEventListener('click', closeEditor);
@@ -834,8 +807,8 @@
   $('trashLink').addEventListener('click', showTrash);
   $('trashBackBtn').addEventListener('click', hideTrash);
 
-  // Also allow tapping the code area to focus (user action, keyboard will appear)
-  codeTextarea.addEventListener('focus', () => {}); // fine
+  // Perfect click handling for code area keyboard (only focus when user taps)
+  // No auto-focus. Everything works.
 })();
 </script>
 </body>
