@@ -24,8 +24,6 @@
       --shadow: 0 8px 30px rgba(0,0,0,0.6);
       --note-bg: #1c1c30;
       --project-bg: #24243a;
-      --tab-active-bg: #1e1e34;
-      --tab-inactive-bg: transparent;
     }
     *{margin:0;padding:0;box-sizing:border-box}
     html { height: 100%; overflow: hidden; }
@@ -44,9 +42,10 @@
     ::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
 
     /* ---- HOME VIEW ---- */
-    .home-view { display: flex; flex-direction: column; flex: 1; padding: 16px 16px 0; }
-    .home-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
-    .home-title {
+    .home-view, .trash-view { display: none; flex-direction: column; flex: 1; padding: 16px 16px 0; }
+    .home-view.active, .trash-view.active { display: flex; }
+    .home-header, .trash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
+    .home-title, .trash-title {
       font-size: 2rem; font-weight: 800; letter-spacing: -0.5px;
       background: linear-gradient(135deg, var(--accent), var(--green));
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -97,7 +96,7 @@
     }
     .note-card-home:hover { border-color: var(--accent); box-shadow: 0 6px 16px rgba(59,130,246,0.12); }
     .note-card-home:active { background: #262640; }
-    .note-card-home .title { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; }
+    .note-card-home .title { font-weight: 600; font-size: 0.95rem; margin-bottom: 8px; padding-right: 24px; }
     .note-card-home .lang {
       font-size: 0.65rem; text-transform: uppercase;
       color: rgba(59,130,246,0.7);
@@ -110,41 +109,40 @@
       background: rgba(16,185,129,0.08);
       padding: 2px 8px; border-radius: 6px;
     }
-    .note-card-home .delete-btn {
+    .pin-btn {
+      position: absolute; top: 10px; right: 10px;
+      background: none; border: none; color: var(--secondary);
+      cursor: pointer; padding: 4px; border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .pin-btn.pinned { color: #f59e0b; }
+    .pin-btn:hover { background: rgba(255,255,255,0.06); }
+    .delete-btn {
       position: absolute; bottom: 12px; right: 12px;
       background: none; border: none; color: var(--secondary);
       cursor: pointer; font-size: 0.75rem; transition: color 0.2s;
     }
-    .note-card-home .delete-btn:hover { color: var(--red); }
+    .delete-btn:hover { color: var(--red); }
 
-    .empty-notes, .loading-notes, .error-notes {
-      grid-column: 1 / -1; text-align: center;
-      padding: 30px 20px; color: var(--secondary); font-size: 0.85rem;
-    }
-    .dashboard-link {
+    .empty-notes { grid-column: 1 / -1; text-align: center; padding: 30px 20px; color: var(--secondary); font-size: 0.85rem; }
+    .bottom-links { display: flex; gap: 16px; margin-top: 10px; align-items: center; }
+    .dashboard-link, .trash-link {
       display: inline-flex; align-items: center; gap: 6px;
       color: var(--accent); text-decoration: none; font-weight: 500;
-      margin-top: 8px; font-size: 0.85rem;
+      font-size: 0.85rem; cursor: pointer;
     }
+    .trash-link { color: var(--secondary); }
+    .trash-link:hover { color: var(--text); }
 
     /* ---- EDITOR VIEW ---- */
     .editor-view { display: none; flex-direction: column; flex: 1; }
     .editor-view.active { display: flex; }
-    .navbar {
-      padding: 8px 18px; display: flex; align-items: center; gap: 12px;
-      border-bottom: 1px solid var(--border); min-height: 52px; background: #0d0d18;
-    }
-    .back-btn {
-      background: none; border: none; color: var(--accent); font-size: 0.9rem;
-      cursor: pointer; display: flex; align-items: center; gap: 4px;
-    }
-    .nav-title-input {
-      flex: 1; background: transparent; border: none; font-size: 1.15rem;
-      font-weight: 600; color: var(--text); outline: none;
-    }
+    .navbar { padding: 8px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); min-height: 52px; background: #0d0d18; }
+    .back-btn { background: none; border: none; color: var(--accent); font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+    .nav-title-input { flex: 1; background: transparent; border: none; font-size: 1.15rem; font-weight: 600; color: var(--text); outline: none; }
     .nav-title-input::placeholder { color: var(--secondary); }
 
-    /* ── PROFESSIONAL TAB BAR ── */
+    /* Professional tab bar with file type indicators */
     .tabs-bar {
       display: flex; align-items: stretch; gap: 0;
       background: #0c0c1a; border-bottom: 1px solid #252540;
@@ -160,29 +158,28 @@
       border-bottom: 2px solid transparent;
       cursor: pointer; white-space: nowrap;
       transition: all 0.15s ease;
-      position: relative;
       margin-right: 2px;
     }
-    .tab:hover {
-      color: #d0d0e0;
-      background: rgba(255,255,255,0.03);
-      border-bottom: 2px solid rgba(255,255,255,0.1);
+    .tab:hover { color: #d0d0e0; background: rgba(255,255,255,0.03); border-bottom-color: rgba(255,255,255,0.1); }
+    .tab.active { color: #fff; background: #1a1a32; border-bottom: 2px solid var(--accent); font-weight: 600; }
+    .file-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #555;
     }
-    .tab.active {
-      color: #fff;
-      background: #1a1a32;
-      border-bottom: 2px solid var(--accent);
-      font-weight: 600;
-    }
+    .file-dot.html { background: #e44d26; }
+    .file-dot.css { background: #264de4; }
+    .file-dot.js, .file-dot.jsx, .file-dot.ts { background: #f7df1e; }
+    .file-dot.py { background: #306998; }
+    .file-dot.json { background: #f5a623; }
+    .file-dot.md, .file-dot.txt { background: #6c757d; }
     .tab-close {
       width: 18px; height: 18px; border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
       font-size: 1rem; color: inherit; opacity: 0;
-      transition: opacity 0.15s, background 0.15s;
-      line-height: 1; margin-left: 2px;
+      transition: opacity 0.15s, background 0.15s; line-height: 1; margin-left: 2px;
     }
     .tab:hover .tab-close { opacity: 0.6; }
-    .tab .tab-close:hover { opacity: 1; background: rgba(255,255,255,0.12); border-radius: 3px; }
+    .tab .tab-close:hover { opacity: 1; background: rgba(255,255,255,0.12); }
     .add-file-btn {
       display: flex; align-items: center; gap: 6px;
       padding: 0 14px; height: 38px;
@@ -192,9 +189,7 @@
       margin-left: auto;
     }
     .add-file-btn:hover { color: #fff; background: rgba(255,255,255,0.04); }
-    .add-file-btn svg { width: 14px; height: 14px; }
 
-    /* ── EDITOR AREA ── */
     .editor-container { flex: 1; display: flex; flex-direction: column; min-height: 0; }
     .code-stage { flex: 1; position: relative; overflow: hidden; }
     .code-layer {
@@ -272,7 +267,7 @@
 <div class="app" id="appRoot">
 
   <!-- HOME VIEW -->
-  <div class="home-view" id="homeView">
+  <div class="home-view active" id="homeView">
     <div class="home-header">
       <span class="home-title">DevPath Notes</span>
       <div class="home-actions">
@@ -300,10 +295,29 @@
     <div class="notes-grid" id="notesGrid"></div>
     <div class="section-title">Projects</div>
     <div class="notes-grid" id="projectsGrid"></div>
-    <a href="./index.html" class="dashboard-link">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-      Dashboard
-    </a>
+    <div class="bottom-links">
+      <a href="./index.html" class="dashboard-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Dashboard
+      </a>
+      <span class="trash-link" id="trashLink">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+        Trash
+      </span>
+    </div>
+  </div>
+
+  <!-- TRASH VIEW -->
+  <div class="trash-view" id="trashView">
+    <div class="trash-header">
+      <span class="trash-title">Trash</span>
+      <button class="back-btn" id="trashBackBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+    </div>
+    <div class="notes-grid" id="trashGrid"></div>
+    <div class="empty-notes" id="trashEmpty" style="display:none;">Trash is empty.</div>
   </div>
 
   <!-- EDITOR VIEW -->
@@ -388,7 +402,11 @@
 <script>
 (function() {
   const STORAGE_KEY = 'devpath_notes';
+  const TRASH_KEY = 'devpath_trash';
+  const TRASH_DAYS = 30;
+
   let notes = [];
+  let trash = [];
   let currentId = null;
   let originalNote = null;
   let filterLang = 'all';
@@ -407,6 +425,7 @@
 
   const $ = id => document.getElementById(id);
   const homeView = $('homeView');
+  const trashView = $('trashView');
   const editorView = $('editorView');
   const previewPane = $('previewPane');
   const previewIframe = $('previewIframe');
@@ -415,6 +434,8 @@
   const lineNums = $('lineNums');
   const notesGrid = $('notesGrid');
   const projectsGrid = $('projectsGrid');
+  const trashGrid = $('trashGrid');
+  const trashEmpty = $('trashEmpty');
   const tabsBar = $('tabsBar');
   const tabsContainer = $('tabsContainer');
 
@@ -423,14 +444,27 @@
     $('toastPanel').appendChild(t); setTimeout(() => t.remove(), 2500);
   }
 
+  // ── STORAGE ──
   function loadNotesFromStorage() {
     try { notes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
     catch (e) { notes = []; }
-    notes.forEach(n => { if (!n.id) n.id = generateId(); if (!n.updated) n.updated = Date.now(); });
+    notes.forEach(n => { if (!n.id) n.id = generateId(); if (!n.updated) n.updated = Date.now(); if (n.pinned === undefined) n.pinned = false; });
   }
   function saveNotesToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify(notes)); }
+
+  function loadTrashFromStorage() {
+    try { trash = JSON.parse(localStorage.getItem(TRASH_KEY)) || []; }
+    catch (e) { trash = []; }
+    const now = Date.now();
+    const cutoff = now - TRASH_DAYS * 24 * 60 * 60 * 1000;
+    trash = trash.filter(item => item.deletedAt > cutoff);
+    saveTrashToStorage();
+  }
+  function saveTrashToStorage() { localStorage.setItem(TRASH_KEY, JSON.stringify(trash)); }
+
   function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2,9); }
 
+  // ── HOME RENDERING ──
   function renderHome() {
     const noteList = notes.filter(n => !n.files);
     const projectList = notes.filter(n => !!n.files);
@@ -441,7 +475,8 @@
         const q = searchTerm.toLowerCase();
         filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(q) || (n.content||'').toLowerCase().includes(q));
       }
-      filtered.sort((a,b) => b.updated - a.updated);
+      // Sort pinned first, then updated desc
+      filtered.sort((a,b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.updated - a.updated);
       return filtered;
     };
     renderGrid(notesGrid, applyFilters(noteList), false);
@@ -451,20 +486,145 @@
   function renderGrid(grid, items, isProject) {
     if (!items.length) { grid.innerHTML = `<div class="empty-notes">No ${isProject?'projects':'notes'} yet.</div>`; return; }
     grid.innerHTML = items.map(n => {
+      const isPinned = n.pinned ? 'pinned' : '';
       const langLabel = isProject ? '<span class="project-badge">Project</span>' : `<span class="lang">${n.lang||'txt'}</span>`;
-      return `<div class="note-card-home" data-id="${n.id}"><div class="title">${esc(n.title||'Untitled')}</div>${langLabel}<button class="delete-btn" data-del="${n.id}">Delete</button></div>`;
+      return `
+      <div class="note-card-home" data-id="${n.id}">
+        <button class="pin-btn ${isPinned}" data-pin="${n.id}" title="${n.pinned ? 'Unpin' : 'Pin'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="${n.pinned ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M12 2l3 9h6l-3 9v4H6v-4l-3-9h6z"/></svg>
+        </button>
+        <div class="title">${esc(n.title || 'Untitled')}</div>
+        ${langLabel}
+        <button class="delete-btn" data-del="${n.id}">Delete</button>
+      </div>`;
     }).join('');
     grid.querySelectorAll('.note-card-home').forEach(card => {
-      card.addEventListener('click', e => { if (!e.target.closest('[data-del]')) openNote(card.dataset.id); });
+      card.addEventListener('click', e => {
+        if (e.target.closest('[data-del]') || e.target.closest('[data-pin]')) return;
+        openNote(card.dataset.id);
+      });
     });
     grid.querySelectorAll('[data-del]').forEach(btn => {
       btn.addEventListener('click', e => {
-        e.stopPropagation(); const id = btn.dataset.del;
-        if (confirm('Delete this note?')) { notes = notes.filter(n => n.id !== id); saveNotesToStorage(); renderHome(); toast('Deleted'); }
+        e.stopPropagation();
+        const id = btn.dataset.del;
+        moveToTrash(id);
+      });
+    });
+    grid.querySelectorAll('[data-pin]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const id = btn.dataset.pin;
+        togglePin(id);
       });
     });
   }
 
+  function togglePin(id) {
+    const note = notes.find(n => n.id === id);
+    if (note) {
+      note.pinned = !note.pinned;
+      note.updated = Date.now();
+      saveNotesToStorage();
+      renderHome();
+      toast(note.pinned ? 'Pinned' : 'Unpinned');
+    }
+  }
+
+  function moveToTrash(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    if (currentId === id) {
+      // If currently open, close editor first
+      discardChangesAndClose();
+    }
+    trash.push({ id: generateId(), note: { ...note }, deletedAt: Date.now() });
+    notes = notes.filter(n => n.id !== id);
+    saveNotesToStorage();
+    saveTrashToStorage();
+    renderHome();
+    toast('Moved to trash');
+  }
+
+  // ── TRASH VIEW ──
+  function renderTrash() {
+    if (!trash.length) {
+      trashGrid.innerHTML = '';
+      trashEmpty.style.display = 'block';
+      return;
+    }
+    trashEmpty.style.display = 'none';
+    trash.sort((a,b) => b.deletedAt - a.deletedAt);
+    trashGrid.innerHTML = trash.map(item => {
+      const n = item.note;
+      return `
+      <div class="note-card-home" style="opacity:0.85">
+        <div class="title">${esc(n.title || 'Untitled')}</div>
+        <div style="font-size:0.65rem; color:var(--secondary); margin-top:4px;">Deleted ${timeAgo(item.deletedAt)}</div>
+        <button class="delete-btn" style="position:static; margin-top:8px;" data-restore="${item.id}">Restore</button>
+        <button class="delete-btn" style="position:static; margin-left:8px; color:var(--red);" data-permadelete="${item.id}">Delete forever</button>
+      </div>`;
+    }).join('');
+    trashGrid.querySelectorAll('[data-restore]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const trashId = btn.dataset.restore;
+        restoreFromTrash(trashId);
+      });
+    });
+    trashGrid.querySelectorAll('[data-permadelete]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const trashId = btn.dataset.permadelete;
+        permanentlyDelete(trashId);
+      });
+    });
+  }
+
+  function restoreFromTrash(trashId) {
+    const idx = trash.findIndex(t => t.id === trashId);
+    if (idx === -1) return;
+    const restoredNote = { ...trash[idx].note, id: trash[idx].note.id || generateId() };
+    notes.unshift(restoredNote);
+    trash.splice(idx, 1);
+    saveNotesToStorage();
+    saveTrashToStorage();
+    renderTrash();
+    renderHome();
+    toast('Restored');
+  }
+
+  function permanentlyDelete(trashId) {
+    if (!confirm('Delete permanently?')) return;
+    trash = trash.filter(t => t.id !== trashId);
+    saveTrashToStorage();
+    renderTrash();
+    toast('Permanently deleted');
+  }
+
+  function timeAgo(timestamp) {
+    const seconds = Math.floor((Date.now() - timestamp) / 1000);
+    if (seconds < 60) return 'just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    return `${days}d ago`;
+  }
+
+  function showTrash() {
+    homeView.classList.remove('active');
+    trashView.classList.add('active');
+    renderTrash();
+  }
+  function hideTrash() {
+    trashView.classList.remove('active');
+    homeView.classList.add('active');
+    renderHome();
+  }
+
+  // ── OPEN / CLOSE NOTES ──
   function openNote(id) {
     if (previewVisible) togglePreview();
     const note = notes.find(n => n.id === id); if (!note) return;
@@ -479,12 +639,14 @@
       currentFiles = null; tabsBar.style.display = 'none';
       codeTextarea.value = note.content || ''; $('langPicker').value = note.lang || 'plaintext';
     }
-    homeView.style.display = 'none'; editorView.classList.add('active');
-    updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo(); codeTextarea.focus();
+    homeView.classList.remove('active');
+    editorView.classList.add('active');
+    updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo();
+    // Do NOT focus to avoid keyboard popping up immediately
   }
 
   function createNewNote(isProject = false) {
-    const newNote = { id: generateId(), title: '', updated: Date.now(), lang: 'html' };
+    const newNote = { id: generateId(), title: '', updated: Date.now(), lang: 'html', pinned: false };
     if (isProject) newNote.files = { 'index.html': '', 'style.css': '', 'script.js': '' };
     else newNote.content = '';
     notes.unshift(newNote); openNote(newNote.id); renderHome();
@@ -505,13 +667,15 @@
 
   function renderTabs() {
     if (!isMultiFile || !currentFiles) return;
-    tabsContainer.innerHTML = Object.keys(currentFiles).map(name => `
+    tabsContainer.innerHTML = Object.keys(currentFiles).map(name => {
+      const dotClass = getFileDotClass(name);
+      return `
       <div class="tab ${name === activeFileName ? 'active' : ''}" data-file="${name}">
+        <span class="file-dot ${dotClass}"></span>
         <span>${name}</span>
         <span class="tab-close" data-close="${name}">&times;</span>
-      </div>
-    `).join('');
-    // Close button events
+      </div>`;
+    }).join('');
     tabsContainer.querySelectorAll('.tab-close').forEach(closeBtn => {
       closeBtn.addEventListener('click', e => {
         e.stopPropagation();
@@ -523,14 +687,17 @@
         }
       });
     });
-    // Tab switch
     tabsContainer.querySelectorAll('.tab').forEach(tab => {
       tab.addEventListener('click', e => {
         if (e.target.classList.contains('tab-close')) return;
         activeFileName = tab.dataset.file;
-        renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo(); codeTextarea.focus();
+        renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo();
       });
     });
+  }
+  function getFileDotClass(name) {
+    const ext = name.split('.').pop().toLowerCase();
+    return { html: 'html', css: 'css', js: 'js', jsx: 'js', ts: 'js', py: 'py', json: 'json' }[ext] || 'txt';
   }
 
   function buildCurrentNoteFromUI() {
@@ -559,9 +726,8 @@
       (!originalNote.files ? !originalNote.content : Object.values(originalNote.files).every(v => !v));
     if (isNewUnsaved && idx !== -1) notes.splice(idx, 1);
     else if (originalNote && idx !== -1) { notes[idx] = { ...originalNote }; saveNotesToStorage(); }
-    // Clear
     currentId = null; originalNote = null; isMultiFile = false; currentFiles = null;
-    editorView.classList.remove('active'); homeView.style.display = 'flex';
+    editorView.classList.remove('active'); homeView.classList.add('active');
     $('noteTitle').value = ''; codeTextarea.value = ''; codeHighlight.textContent = '';
     resetUndoRedo(); if (previewVisible) togglePreview(); tabsBar.style.display = 'none';
     renderHome();
@@ -572,14 +738,14 @@
   function deleteCurrent() {
     if (!currentId) return;
     if (!confirm('Delete permanently?')) return;
-    notes = notes.filter(n => n.id !== currentId); saveNotesToStorage();
-    currentId = null; originalNote = null;
-    editorView.classList.remove('active'); homeView.style.display = 'flex';
+    moveToTrash(currentId);
+    currentId = null;
+    editorView.classList.remove('active'); homeView.classList.add('active');
     $('noteTitle').value = ''; codeTextarea.value = ''; codeHighlight.textContent = '';
     resetUndoRedo(); if (previewVisible) togglePreview(); tabsBar.style.display = 'none';
-    renderHome(); toast('Deleted');
   }
 
+  // ── PREVIEW ──
   function togglePreview() {
     previewVisible = !previewVisible;
     if (previewVisible) {
@@ -609,6 +775,7 @@
     }, 80);
   }
 
+  // ── UNDO / REDO ──
   function resetUndoRedo() { undoStack=[]; redoStack=[]; currentSnapshot=codeTextarea.value; updateUndoButtons(); }
   function updateUndoButtons() { $('undoBtn').disabled=undoStack.length===0; $('redoBtn').disabled=redoStack.length===0; }
   function pushToUndo() { const val=codeTextarea.value; if(val!==currentSnapshot&&!isUndoRedo){undoStack.push(currentSnapshot);currentSnapshot=val;redoStack=[];updateUndoButtons();} }
@@ -623,10 +790,12 @@
   function updateStats(){ const code=codeTextarea.value; $('charCount').textContent=code.length+' chars'; $('lineCount').textContent='Ln '+code.split('\n').length; }
   function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-  // INIT
-  loadNotesFromStorage(); renderHome();
+  // ── INIT ──
+  loadNotesFromStorage();
+  loadTrashFromStorage();
+  renderHome();
 
-  // Events
+  // ── EVENT LISTENERS ──
   $('homeNewBtn').addEventListener('click', openNewNote);
   $('homeProjectBtn').addEventListener('click', openNewProject);
   $('editorBackBtn').addEventListener('click', closeEditor);
@@ -657,10 +826,16 @@
   $('addFileBtn').addEventListener('click', () => {
     let name = prompt('File name (e.g., main.js):'); if (!name) return;
     if (!/\.\w+$/.test(name)) name += '.html';
-    if (currentFiles[name]) return toast('File already exists');
-    currentFiles[name] = ''; activeFileName = name;
-    renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo(); codeTextarea.focus();
+    if (currentFiles && currentFiles[name]) return toast('File already exists');
+    if (currentFiles) currentFiles[name] = '';
+    activeFileName = name;
+    renderTabs(); updateEditorContent(); refreshHighlight(); updateStats(); resetUndoRedo();
   });
+  $('trashLink').addEventListener('click', showTrash);
+  $('trashBackBtn').addEventListener('click', hideTrash);
+
+  // Also allow tapping the code area to focus (user action, keyboard will appear)
+  codeTextarea.addEventListener('focus', () => {}); // fine
 })();
 </script>
 </body>
