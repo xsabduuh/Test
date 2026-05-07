@@ -1,665 +1,273 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصفية العقل | منصة العقل VIP</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>تصفية العقل</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
 
-        body {
-            background: #050510;
-            font-family: 'Tajawal', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1.5rem;
-            color: #ffffff;
-            transition: background 0.6s;
-        }
+body{
+    background:#0f1117;
+    color:white;
+    min-height:100vh;
+    overflow-x:hidden;
+}
 
-        body.state-calm {
-            background: radial-gradient(circle at 30% 20%, #0b1424, #020211);
-        }
+header{
+    padding:40px 20px;
+    text-align:center;
+    background:linear-gradient(90deg,#111827,#1f2937);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+}
 
-        body.state-alert {
-            background: radial-gradient(circle at 30% 20%, #2a0e16, #0d0104);
-        }
+header h1{
+    font-size:55px;
+    margin-bottom:10px;
+    letter-spacing:2px;
+}
 
-        .container {
-            width: 100%;
-            max-width: 950px;
-            background: rgba(10, 15, 30, 0.75);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(0, 180, 255, 0.3);
-            border-radius: 2.5rem;
-            padding: 2.8rem 2.5rem;
-            box-shadow: 0 0 60px rgba(0, 140, 255, 0.25), inset 0 0 30px rgba(0, 180, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
+header p{
+    color:#9ca3af;
+    font-size:18px;
+}
 
-        .container::before {
-            content: "";
-            position: absolute;
-            top: -30%;
-            left: -20%;
-            width: 80%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(0, 160, 255, 0.15) 0%, transparent 70%);
-            z-index: 0;
-            pointer-events: none;
-        }
+.container{
+    width:90%;
+    max-width:1200px;
+    margin:40px auto;
+}
 
-        .content {
-            position: relative;
-            z-index: 2;
-        }
+.vip-box{
+    background:#161b22;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:25px;
+    transition:0.3s;
+}
 
-        /* الشريط العلوي */
-        .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
-        }
+.vip-box:hover{
+    transform:translateY(-5px);
+    border-color:#3b82f6;
+}
 
-        .vip-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: rgba(255, 215, 0, 0.1);
-            padding: 0.5rem 2rem;
-            border-radius: 3rem;
-            border: 1px solid rgba(255, 215, 0, 0.4);
-        }
+.section-title{
+    font-size:28px;
+    margin-bottom:20px;
+    color:#60a5fa;
+}
 
-        .vip-logo .crown {
-            font-size: 2.4rem;
-            filter: drop-shadow(0 0 15px #ffbb00);
-        }
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
 
-        .vip-logo span {
-            font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            color: #ffd966;
-        }
+.card{
+    background:#0d1117;
+    padding:20px;
+    border-radius:15px;
+    border:1px solid rgba(255,255,255,0.05);
+    position:relative;
+    overflow:hidden;
+}
 
-        .stats-panel {
-            display: flex;
-            gap: 2.5rem;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.6rem 2.5rem;
-            border-radius: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:5px;
+    height:100%;
+    background:#ef4444;
+}
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.2rem;
-        }
+.card.good::before{
+    background:#22c55e;
+}
 
-        .stat-item .icon {
-            font-size: 2rem;
-            filter: drop-shadow(0 0 10px currentColor);
-        }
+.card h3{
+    margin-bottom:10px;
+    font-size:22px;
+}
 
-        .stat-item .number {
-            font-weight: 900;
-            color: #ffb347;
-            font-size: 1.5rem;
-        }
+.card p{
+    color:#9ca3af;
+    line-height:1.7;
+}
 
-        /* عنوان رئيسي */
-        .main-title {
-            font-size: 5.5rem;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(to right, #a0d0ff, #60a0ff, #c0e0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.2rem;
-            line-height: 1.1;
-            filter: drop-shadow(0 0 35px #0066ff);
-            letter-spacing: 3px;
-        }
+.counter{
+    margin-top:15px;
+    font-size:15px;
+    color:#60a5fa;
+}
 
-        .subtitle {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #90b8ee;
-            margin-bottom: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.7rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1.5rem;
-        }
+button{
+    margin-top:15px;
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
 
-        .subtitle .brain {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 0 15px #4488ff);
-        }
+button:hover{
+    background:#1d4ed8;
+}
 
-        /* بطاقة الصيام */
-        .fasting-card {
-            background: rgba(15, 25, 45, 0.6);
-            border: 1px solid rgba(0, 160, 255, 0.4);
-            border-radius: 2rem;
-            padding: 1.2rem 2.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-bottom: 3rem;
-            backdrop-filter: blur(15px);
-        }
+.quote{
+    text-align:center;
+    margin-top:40px;
+    font-size:22px;
+    color:#d1d5db;
+    line-height:1.8;
+}
 
-        .timer-area {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .timer-icon {
-            font-size: 3rem;
-            filter: drop-shadow(0 0 18px #00ccff);
-        }
-
-        .time-display {
-            font-size: 2.8rem;
-            font-weight: 700;
-            font-family: monospace;
-            background: #0a1226;
-            padding: 0.2rem 2rem;
-            border-radius: 2rem;
-            color: #7cc8ff;
-            letter-spacing: 5px;
-            border: 1px solid rgba(0, 200, 255, 0.3);
-        }
-
-        .btn {
-            padding: 1rem 2.2rem;
-            border-radius: 2.5rem;
-            font-weight: bold;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.7rem;
-            color: white;
-            background: #1a2c44;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-        }
-
-        .btn-fasting {
-            background: #0e2a44;
-            border: 1px solid #2d6090;
-        }
-
-        .btn-fasting.active {
-            background: #145c3e;
-            border-color: #2ecc71;
-            box-shadow: 0 0 25px #1f8b4c;
-        }
-
-        .btn-icon {
-            font-size: 1.8rem;
-        }
-
-        /* الشبكة الرئيسية */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.2rem;
-        }
-
-        @media (max-width: 750px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-            .main-title {
-                font-size: 3.5rem;
-            }
-        }
-
-        .card {
-            background: rgba(12, 20, 35, 0.65);
-            backdrop-filter: blur(20px);
-            border-radius: 2.2rem;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            transition: 0.3s;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.6rem;
-            font-size: 1.7rem;
-            font-weight: 700;
-        }
-
-        .card-header .head-icon {
-            font-size: 2.8rem;
-            filter: drop-shadow(0 0 15px currentColor);
-        }
-
-        .harmful-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 1.8rem;
-            max-height: 210px;
-            overflow-y: auto;
-        }
-
-        .tag-item {
-            background: #251a28;
-            border: 1px solid #c94a6e;
-            border-radius: 3rem;
-            padding: 0.6rem 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
-            color: #f7c4c4;
-        }
-
-        .tag-item .tag-icon {
-            font-size: 1.3rem;
-        }
-
-        .tag-item button {
-            background: none;
-            border: none;
-            color: #ee8888;
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .tag-item button:hover {
-            color: white;
-            transform: scale(1.4);
-        }
-
-        .category-row {
-            display: flex;
-            gap: 0.6rem;
-            margin-bottom: 1.2rem;
-            flex-wrap: wrap;
-        }
-
-        .cat-btn {
-            background: #1b2339;
-            border: 1px solid #3d5170;
-            color: #ccddea;
-            padding: 0.5rem 1.3rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.2s;
-        }
-
-        .cat-btn.active {
-            background: #392a55;
-            border-color: #b07cff;
-            color: white;
-            box-shadow: 0 0 15px #7b4aff;
-        }
-
-        .add-custom {
-            display: flex;
-            gap: 0.6rem;
-        }
-
-        .add-custom input {
-            flex: 1;
-            background: #111b2f;
-            border: 1px solid #3e5170;
-            padding: 0.8rem 1.3rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .btn-danger {
-            background: #68102a;
-            border: 1px solid #c94060;
-        }
-
-        .search-box {
-            display: flex;
-            gap: 0.6rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .search-box input {
-            flex: 1;
-            background: #111b2f;
-            border: 1px solid #3e5170;
-            padding: 0.9rem 1.4rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background: #0044aa;
-            border: 1px solid #3d7eff;
-            box-shadow: 0 8px 18px rgba(0,68,170,0.7);
-        }
-
-        .btn-primary:hover {
-            background: #0055cc;
-        }
-
-        .live-warning {
-            font-size: 0.95rem;
-            color: #ffaa88;
-            min-height: 1.6rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .result-display {
-            padding: 1.2rem;
-            border-radius: 2rem;
-            font-weight: bold;
-            text-align: center;
-            font-size: 1.3rem;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-            border: 1px solid transparent;
-        }
-
-        .result-blocked {
-            border-color: #ff4d6d;
-            color: #ffb3b3;
-        }
-
-        .result-allowed {
-            border-color: #4dff91;
-            color: #b3ffcc;
-        }
-    </style>
+footer{
+    text-align:center;
+    padding:30px;
+    color:#6b7280;
+}
+</style>
 </head>
-<body class="state-calm">
-    <div class="container">
-        <div class="content">
-            <!-- الشريط العلوي -->
-            <div class="top-bar">
-                <div class="vip-logo">
-                    <span class="crown">👑</span>
-                    <span>عقل VIP</span>
-                </div>
-                <div class="stats-panel">
-                    <div class="stat-item">
-                        <span class="icon">🚫</span>
-                        <span>محظور</span>
-                        <span class="number" id="blockedCount">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="icon">✅</span>
-                        <span>فحص</span>
-                        <span class="number" id="checksCount">0</span>
-                    </div>
-                </div>
-            </div>
 
-            <!-- العنوان -->
-            <h1 class="main-title">تصفية العقل</h1>
-            <div class="subtitle">
-                <span class="brain">🧠</span> لا يدخل عقلك إلا ما ينفع
-            </div>
+<body>
 
-            <!-- بطاقة الصيام -->
-            <div class="fasting-card">
-                <div class="timer-area">
-                    <span class="timer-icon">⏳</span>
-                    <span class="time-display" id="fastingTimer">00:00:00</span>
-                </div>
-                <button class="btn btn-fasting" id="toggleFastingBtn">
-                    <span class="btn-icon">▶</span> بدء الصيام
+<header>
+    <h1>تصفية العقل</h1>
+    <p>
+        عقلك ليس مكاناً عاماً.  
+        هو منصة VIP لا يدخلها إلا ما يرفع قيمتك.
+    </p>
+</header>
+
+<div class="container">
+
+    <div class="vip-box">
+        <div class="section-title">🚫 أشياء يجب أن يصوم عنها العقل</div>
+
+        <div class="grid">
+
+            <div class="card">
+                <h3>المحتوى التافه</h3>
+                <p>
+                    فيديوهات قصيرة بلا قيمة، ضجيج، معلومات عشوائية تستهلك الانتباه.
+                </p>
+                <div class="counter">تأثير: تشتيت التركيز</div>
+                <button onclick="blockItem(this)">
+                    منع الدخول
                 </button>
             </div>
 
-            <!-- الشبكة -->
-            <div class="dashboard-grid">
-                <!-- المحظورات -->
-                <div class="card">
-                    <div class="card-header" style="color: #ffb3b3;">
-                        <span class="head-icon">⛔</span> المحظورات
-                    </div>
-                    <div class="category-row" id="categoryFilters">
-                        <button class="cat-btn active" data-cat="all">الكل</button>
-                        <button class="cat-btn" data-cat="مشاعر">😡 مشاعر</button>
-                        <button class="cat-btn" data-cat="عادات">📱 عادات</button>
-                        <button class="cat-btn" data-cat="أفكار">💭 أفكار</button>
-                    </div>
-                    <div class="harmful-tags" id="harmfulTagsContainer"></div>
-                    <div class="add-custom">
-                        <input type="text" id="newHarmfulInput" placeholder="أضف محظوراً ...">
-                        <button class="btn btn-danger" id="addHarmfulBtn"><span>➕</span> إضافة</button>
-                    </div>
-                </div>
-
-                <!-- الفحص -->
-                <div class="card">
-                    <div class="card-header" style="color: #b3ffcc;">
-                        <span class="head-icon">🔍</span> فحص المؤثرات
-                    </div>
-                    <div class="search-box">
-                        <input type="text" id="checkInput" placeholder="اكتب فكرة أو مؤثر ...">
-                        <button class="btn btn-primary" id="checkBtn"><span>✅</span> تحقق</button>
-                    </div>
-                    <div class="live-warning" id="liveWarning"></div>
-                    <div id="resultDisplay" class="result-display"></div>
-                </div>
+            <div class="card">
+                <h3>الدراما السامة</h3>
+                <p>
+                    مشاكل الناس، الجدالات الفارغة، الأخبار السلبية المستمرة.
+                </p>
+                <div class="counter">تأثير: استنزاف نفسي</div>
+                <button onclick="blockItem(this)">
+                    منع الدخول
+                </button>
             </div>
+
+            <div class="card">
+                <h3>المقارنة المرضية</h3>
+                <p>
+                    مقارنة نفسك بحياة الآخرين على مواقع التواصل.
+                </p>
+                <div class="counter">تأثير: انخفاض الثقة</div>
+                <button onclick="blockItem(this)">
+                    منع الدخول
+                </button>
+            </div>
+
+            <div class="card">
+                <h3>الإدمان الرقمي</h3>
+                <p>
+                    التحقق المستمر من الهاتف بدون هدف حقيقي.
+                </p>
+                <div class="counter">تأثير: ضعف الانتباه</div>
+                <button onclick="blockItem(this)">
+                    منع الدخول
+                </button>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        (() => {
-            // البيانات الافتراضية
-            const defaultItems = [
-                { text: "الغضب", cat: "مشاعر" },
-                { text: "الحسد", cat: "مشاعر" },
-                { text: "التفكير السلبي", cat: "أفكار" },
-                { text: "وسائل التواصل المفرطة", cat: "عادات" },
-                { text: "الأخبار السيئة", cat: "عادات" },
-                { text: "مقارنة النفس", cat: "أفكار" },
-                { text: "الخوف من الفشل", cat: "مشاعر" },
-                { text: "القلق الزائد", cat: "مشاعر" },
-                { text: "التشاؤم", cat: "أفكار" },
-                { text: "النميمة", cat: "عادات" },
-                { text: "الإدمان الرقمي", cat: "عادات" },
-                { text: "العلاقات السامة", cat: "عادات" }
-            ];
+    <div class="vip-box">
+        <div class="section-title">✅ أشياء يسمح لها بالدخول</div>
 
-            let harmfulList = [];
-            const STORAGE = 'mindVipHarmfulListV2';
-            let fastingActive = false, fastingSeconds = 0, fastingInterval = null, fastingStart = null;
-            let totalChecks = 0;
-            let currentCat = 'all';
+        <div class="grid">
 
-            // DOM
-            const harmfulContainer = document.getElementById('harmfulTagsContainer');
-            const blockedCountEl = document.getElementById('blockedCount');
-            const checksCountEl = document.getElementById('checksCount');
-            const newInput = document.getElementById('newHarmfulInput');
-            const addBtn = document.getElementById('addHarmfulBtn');
-            const checkInput = document.getElementById('checkInput');
-            const checkBtn = document.getElementById('checkBtn');
-            const resultDisplay = document.getElementById('resultDisplay');
-            const liveWarning = document.getElementById('liveWarning');
-            const timerEl = document.getElementById('fastingTimer');
-            const fastingBtn = document.getElementById('toggleFastingBtn');
-            const catButtons = document.querySelectorAll('.cat-btn');
-            const body = document.body;
+            <div class="card good">
+                <h3>التعلم</h3>
+                <p>
+                    كتب، برمجة، لغات، فلسفة، علوم، مهارات حقيقية.
+                </p>
+            </div>
 
-            // تحميل
-            function load() {
-                const s = localStorage.getItem(STORAGE);
-                harmfulList = s ? (JSON.parse(s) || [...defaultItems]) : [...defaultItems];
-                const fActive = localStorage.getItem('mindVipFasting');
-                if (fActive === 'active') {
-                    const start = localStorage.getItem('mindVipFastingStart');
-                    if (start) {
-                        fastingStart = parseInt(start, 10);
-                        fastingActive = true;
-                        fastingSeconds = Math.floor((Date.now() - fastingStart) / 1000);
-                        startTimerInterval();
-                    }
-                }
-                totalChecks = parseInt(localStorage.getItem('mindVipTotalChecks') || '0', 10);
-                updateStats();
-            }
+            <div class="card good">
+                <h3>الهدوء</h3>
+                <p>
+                    التأمل، المشي، النوم الجيد، الصمت المؤقت.
+                </p>
+            </div>
 
-            function save() { localStorage.setItem(STORAGE, JSON.stringify(harmfulList)); updateStats(); }
-            function updateStats() {
-                if (blockedCountEl) blockedCountEl.textContent = harmfulList.length;
-                if (checksCountEl) checksCountEl.textContent = totalChecks;
-            }
+            <div class="card good">
+                <h3>الأهداف</h3>
+                <p>
+                    التركيز على بناء مستقبلك بدلاً من استهلاك حياة الآخرين.
+                </p>
+            </div>
 
-            function getFiltered() {
-                return currentCat === 'all' ? harmfulList : harmfulList.filter(i => i.cat === currentCat);
-            }
+            <div class="card good">
+                <h3>الأفكار النقية</h3>
+                <p>
+                    ما يجعلك أكثر قوة ووعياً وانضباطاً.
+                </p>
+            </div>
 
-            function renderTags() {
-                if (!harmfulContainer) return;
-                const items = getFiltered();
-                harmfulContainer.innerHTML = '';
-                if (items.length === 0) {
-                    harmfulContainer.innerHTML = '<div style="color:#888; padding:0.8rem;">لا توجد محظورات</div>';
-                    return;
-                }
-                items.forEach(item => {
-                    const idx = harmfulList.indexOf(item);
-                    const tag = document.createElement('span');
-                    tag.className = 'tag-item';
-                    tag.innerHTML = `<span class="tag-icon">🚫</span> ${esc(item.text)} <button data-idx="${idx}">✕</button>`;
-                    harmfulContainer.appendChild(tag);
-                });
-                document.querySelectorAll('.tag-item button').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        const i = parseInt(this.dataset.idx, 10);
-                        if (!isNaN(i) && i >= 0 && i < harmfulList.length) {
-                            harmfulList.splice(i, 1);
-                            save(); renderTags(); clearResult();
-                        }
-                    });
-                });
-            }
+        </div>
+    </div>
 
-            function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    <div class="quote">
+        “كل شيء تسمح له بالدخول إلى عقلك  
+        يعيد تشكيل شخصيتك.”
+    </div>
 
-            function addItem() {
-                const text = newInput.value.trim();
-                if (!text) return;
-                if (harmfulList.some(i => i.text === text)) { alert('موجود مسبقاً'); return; }
-                let cat = 'عادات';
-                if (text.includes('غضب')||text.includes('خوف')||text.includes('قلق')||text.includes('حسد')) cat='مشاعر';
-                else if (text.includes('تفكير')||text.includes('تشاؤم')||text.includes('سلبية')) cat='أفكار';
-                harmfulList.push({text, cat});
-                save(); renderTags(); newInput.value = '';
-            }
-            addBtn?.addEventListener('click', addItem);
-            newInput?.addEventListener('keypress', e => { if(e.key==='Enter') addItem(); });
+</div>
 
-            function performCheck() {
-                const thought = checkInput.value.trim();
-                if (!thought) { resultDisplay.innerHTML = '⚠️ أدخل شيئاً للفحص'; resultDisplay.className = 'result-display'; return; }
-                totalChecks++; localStorage.setItem('mindVipTotalChecks', totalChecks); updateStats();
-                const found = harmfulList.some(i => thought.includes(i.text) || i.text.includes(thought));
-                if (found) {
-                    resultDisplay.innerHTML = `🚫 "${esc(thought)}" ممنوع من دخول العقل`;
-                    resultDisplay.className = 'result-display result-blocked';
-                    body.className = 'state-alert';
-                    setTimeout(() => { body.className = 'state-calm'; }, 800);
-                } else {
-                    resultDisplay.innerHTML = `✅ "${esc(thought)}" مسموح .. مرحباً به`;
-                    resultDisplay.className = 'result-display result-allowed';
-                    body.className = 'state-calm';
-                }
-            }
-            function clearResult() { if(resultDisplay) { resultDisplay.innerHTML = ''; resultDisplay.className = 'result-display'; } }
+<footer>
+    نظام حماية العقل • VIP MIND FILTER
+</footer>
 
-            checkInput?.addEventListener('input', function() {
-                const v = this.value.trim();
-                liveWarning.textContent = (v && harmfulList.some(i => v.includes(i.text))) ? '⚠️ هذا النص يحتوي على عنصر محظور!' : '';
-            });
-            checkBtn?.addEventListener('click', performCheck);
-            checkInput?.addEventListener('keypress', e => { if(e.key==='Enter') performCheck(); });
+<script>
+function blockItem(button){
 
-            catButtons.forEach(b => b.addEventListener('click', function() {
-                catButtons.forEach(b=>b.classList.remove('active'));
-                this.classList.add('active');
-                currentCat = this.dataset.cat;
-                renderTags();
-            }));
+    const card = button.parentElement;
 
-            function fmtTime(s) {
-                return `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-            }
-            function updateTimer() { if(timerEl) timerEl.textContent = fmtTime(fastingSeconds); }
-            function startTimerInterval() {
-                if(fastingInterval) clearInterval(fastingInterval);
-                fastingInterval = setInterval(() => { if(fastingActive) { fastingSeconds++; updateTimer(); } }, 1000);
-            }
-            function updateFastingBtn() {
-                if(!fastingBtn) return;
-                fastingBtn.innerHTML = fastingActive ? '<span class="btn-icon">⏸️</span> إيقاف الصيام' : '<span class="btn-icon">▶</span> بدء الصيام';
-                fastingBtn.classList.toggle('active', fastingActive);
-            }
-            function toggleFasting() {
-                fastingActive = !fastingActive;
-                if(fastingActive) {
-                    fastingStart = Date.now();
-                    localStorage.setItem('mindVipFasting','active');
-                    localStorage.setItem('mindVipFastingStart', fastingStart);
-                    startTimerInterval();
-                } else {
-                    localStorage.setItem('mindVipFasting','inactive');
-                    localStorage.removeItem('mindVipFastingStart');
-                    if(fastingInterval) { clearInterval(fastingInterval); fastingInterval = null; }
-                }
-                updateFastingBtn(); updateTimer();
-            }
-            fastingBtn?.addEventListener('click', toggleFasting);
+    card.style.opacity = "0.4";
+    card.style.transform = "scale(0.96)";
+    card.style.border = "1px solid #ef4444";
 
-            // انطلاق
-            load();
-            renderTags();
-            updateTimer();
-            if(fastingActive) startTimerInterval();
-            updateFastingBtn();
-        })();
-    </script>
+    button.innerText = "تم الحظر";
+    button.style.background = "#ef4444";
+
+    button.disabled = true;
+}
+</script>
+
 </body>
 </html>
