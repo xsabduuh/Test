@@ -1,273 +1,834 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>تصفية العقل</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة تصفية العقل VIP</title>
+    <!-- Font Awesome 6 للأيقونات الاحترافية -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
+        :root {
+            --bg-deep: #03050f;
+            --glass-bg: rgba(18, 25, 48, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --neon-blue: #00c2ff;
+            --neon-purple: #b347ea;
+            --neon-gold: #ffb800;
+            --text-primary: #f0f5ff;
+            --text-secondary: #a0b5d8;
+            --danger: #ff4d6a;
+            --success: #4de8a0;
+            --card-blur: blur(24px);
+            --transition: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
 
-body{
-    background:#0f1117;
-    color:white;
-    min-height:100vh;
-    overflow-x:hidden;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-header{
-    padding:40px 20px;
-    text-align:center;
-    background:linear-gradient(90deg,#111827,#1f2937);
-    border-bottom:1px solid rgba(255,255,255,0.08);
-}
+        body {
+            background: var(--bg-deep);
+            font-family: 'Tajawal', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-primary);
+            transition: background 0.6s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-header h1{
-    font-size:55px;
-    margin-bottom:10px;
-    letter-spacing:2px;
-}
+        /* شبكة خلفية متحركة */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(rgba(0, 194, 255, 0.07) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-header p{
-    color:#9ca3af;
-    font-size:18px;
-}
+        body.state-alert {
+            background: radial-gradient(circle at 30% 30%, #1a0710, #050111 80%);
+        }
+        body.state-alert::before {
+            background-image: radial-gradient(rgba(255, 77, 106, 0.09) 1px, transparent 1px);
+        }
 
-.container{
-    width:90%;
-    max-width:1200px;
-    margin:40px auto;
-}
+        .main-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1050px;
+            background: var(--glass-bg);
+            backdrop-filter: var(--card-blur);
+            -webkit-backdrop-filter: var(--card-blur);
+            border: 1px solid var(--glass-border);
+            border-radius: 3.5rem;
+            padding: 3rem 2.8rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        }
 
-.vip-box{
-    background:#161b22;
-    border:1px solid rgba(255,255,255,0.08);
-    border-radius:20px;
-    padding:25px;
-    margin-bottom:25px;
-    transition:0.3s;
-}
+        /* ========== HEADER ========== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
 
-.vip-box:hover{
-    transform:translateY(-5px);
-    border-color:#3b82f6;
-}
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: rgba(255, 184, 0, 0.08);
+            padding: 0.6rem 2rem;
+            border-radius: 4rem;
+            border: 1px solid rgba(255, 184, 0, 0.35);
+            backdrop-filter: blur(15px);
+        }
 
-.section-title{
-    font-size:28px;
-    margin-bottom:20px;
-    color:#60a5fa;
-}
+        .logo-area i {
+            font-size: 2.4rem;
+            color: var(--neon-gold);
+            filter: drop-shadow(0 0 14px var(--neon-gold));
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:20px;
-}
+        .logo-area span {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: #ffe9a7;
+        }
 
-.card{
-    background:#0d1117;
-    padding:20px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,0.05);
-    position:relative;
-    overflow:hidden;
-}
+        .stats-row {
+            display: flex;
+            gap: 2.5rem;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 0.7rem 2.5rem;
+            border-radius: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.card::before{
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    width:5px;
-    height:100%;
-    background:#ef4444;
-}
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1.2rem;
+        }
 
-.card.good::before{
-    background:#22c55e;
-}
+        .stat-item i {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 8px currentColor);
+        }
 
-.card h3{
-    margin-bottom:10px;
-    font-size:22px;
-}
+        .stat-number {
+            font-weight: 900;
+            font-size: 1.6rem;
+            color: var(--neon-gold);
+        }
 
-.card p{
-    color:#9ca3af;
-    line-height:1.7;
-}
+        /* ========== العنوان ========== */
+        .title-block {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-.counter{
-    margin-top:15px;
-    font-size:15px;
-    color:#60a5fa;
-}
+        .main-title {
+            font-size: 5.2rem;
+            font-weight: 900;
+            background: linear-gradient(180deg, #e0f0ff 0%, #60b0ff 60%, #4090e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 40px rgba(0, 162, 255, 0.5));
+            letter-spacing: 2px;
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
 
-button{
-    margin-top:15px;
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:10px;
-    background:#2563eb;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    transition:0.3s;
-}
+        .subtitle {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
 
-button:hover{
-    background:#1d4ed8;
-}
+        .subtitle i {
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+        }
 
-.quote{
-    text-align:center;
-    margin-top:40px;
-    font-size:22px;
-    color:#d1d5db;
-    line-height:1.8;
-}
+        /* ========== قسم الصيام ========== */
+        .fasting-panel {
+            background: rgba(12, 20, 40, 0.5);
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(0, 194, 255, 0.25);
+            border-radius: 2.5rem;
+            padding: 1.4rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
 
-footer{
-    text-align:center;
-    padding:30px;
-    color:#6b7280;
-}
-</style>
+        .fasting-timer-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .fasting-timer-area i {
+            font-size: 3rem;
+            color: var(--neon-blue);
+            filter: drop-shadow(0 0 18px var(--neon-blue));
+        }
+
+        .timer-display {
+            font-size: 2.8rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.3rem 2.2rem;
+            border-radius: 2.5rem;
+            color: #a0e0ff;
+            letter-spacing: 4px;
+            border: 1px solid rgba(0, 194, 255, 0.3);
+        }
+
+        .btn {
+            padding: 1rem 2.2rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: white;
+            background: rgba(20, 35, 60, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn-fasting {
+            background: rgba(0, 100, 200, 0.3);
+            border: 1px solid rgba(0, 194, 255, 0.5);
+        }
+
+        .btn-fasting.active {
+            background: rgba(0, 180, 120, 0.3);
+            border-color: rgba(77, 232, 160, 0.6);
+            box-shadow: 0 0 30px rgba(77, 232, 160, 0.3);
+        }
+
+        .btn i {
+            font-size: 1.6rem;
+        }
+
+        /* ========== شبكة البطاقات ========== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.2rem;
+        }
+
+        @media (max-width: 800px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .main-title {
+                font-size: 3.5rem;
+            }
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--card-blur);
+            -webkit-backdrop-filter: var(--card-blur);
+            border-radius: 2.5rem;
+            padding: 2.2rem;
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .card-header i {
+            font-size: 2.6rem;
+        }
+
+        .card-header.blocked i {
+            color: var(--danger);
+            filter: drop-shadow(0 0 14px var(--danger));
+        }
+
+        .card-header.check i {
+            color: var(--success);
+            filter: drop-shadow(0 0 14px var(--success));
+        }
+
+        /* التصنيفات */
+        .cat-filters {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.4rem;
+            flex-wrap: wrap;
+        }
+
+        .cat-btn {
+            background: rgba(20, 30, 55, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-secondary);
+            padding: 0.5rem 1.3rem;
+            border-radius: 2.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .cat-btn.active {
+            background: rgba(179, 71, 234, 0.2);
+            border-color: var(--neon-purple);
+            color: white;
+            box-shadow: 0 0 18px rgba(179, 71, 234, 0.3);
+        }
+
+        /* وسوم المحظورات */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+            max-height: 210px;
+            overflow-y: auto;
+        }
+
+        .tag {
+            background: rgba(30, 18, 30, 0.6);
+            border: 1px solid rgba(255, 77, 106, 0.5);
+            border-radius: 3rem;
+            padding: 0.6rem 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1rem;
+            color: #ffc4c4;
+            backdrop-filter: blur(12px);
+        }
+
+        .tag i {
+            font-size: 1.2rem;
+            color: var(--danger);
+        }
+
+        .tag .delete-tag {
+            background: none;
+            border: none;
+            color: #ff9999;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: var(--transition);
+        }
+
+        .tag .delete-tag:hover {
+            color: white;
+            transform: scale(1.4);
+        }
+
+        /* إضافة عنصر */
+        .add-row {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .add-row input {
+            flex: 1;
+            background: rgba(15, 22, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.4rem;
+            border-radius: 2.5rem;
+            color: white;
+            outline: none;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn-danger {
+            background: rgba(200, 40, 60, 0.3);
+            border-color: rgba(255, 77, 106, 0.5);
+        }
+
+        /* صندوق الفحص */
+        .search-row {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .search-row input {
+            flex: 1;
+            background: rgba(15, 22, 40, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.9rem 1.4rem;
+            border-radius: 2.5rem;
+            color: white;
+            outline: none;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .btn-primary {
+            background: rgba(0, 80, 200, 0.4);
+            border-color: rgba(0, 162, 255, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: rgba(0, 120, 240, 0.5);
+        }
+
+        .live-warning {
+            font-size: 0.95rem;
+            color: #ffaa88;
+            min-height: 1.6rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .result-box {
+            padding: 1.2rem;
+            border-radius: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            font-size: 1.2rem;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            border: 1px solid transparent;
+            backdrop-filter: blur(15px);
+        }
+
+        .result-box.blocked {
+            border-color: var(--danger);
+            color: #ffb3b3;
+            box-shadow: 0 0 25px rgba(255, 77, 106, 0.2);
+        }
+
+        .result-box.allowed {
+            border-color: var(--success);
+            color: #b3ffcc;
+            box-shadow: 0 0 25px rgba(77, 232, 160, 0.2);
+        }
+    </style>
 </head>
+<body class="state-calm">
 
-<body>
+    <div class="main-container">
+        <!-- ==================== HEADER ==================== -->
+        <div class="header">
+            <div class="logo-area">
+                <i class="fas fa-crown"></i>
+                <span>منصة العقل VIP</span>
+            </div>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <i class="fas fa-ban" style="color: var(--danger);"></i>
+                    <span>محظور</span>
+                    <span class="stat-number" id="blockedCount">0</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                    <span>فحص</span>
+                    <span class="stat-number" id="checksCount">0</span>
+                </div>
+            </div>
+        </div>
 
-<header>
-    <h1>تصفية العقل</h1>
-    <p>
-        عقلك ليس مكاناً عاماً.  
-        هو منصة VIP لا يدخلها إلا ما يرفع قيمتك.
-    </p>
-</header>
+        <!-- ==================== العنوان الرئيسي ==================== -->
+        <div class="title-block">
+            <h1 class="main-title">تصفية العقل</h1>
+            <div class="subtitle">
+                <i class="fas fa-brain"></i>
+                عقلك منصة خاصة .. لا يدخلها إلا ما ينفع
+            </div>
+        </div>
 
-<div class="container">
+        <!-- ==================== لوحة الصيام ==================== -->
+        <div class="fasting-panel">
+            <div class="fasting-timer-area">
+                <i class="fas fa-hourglass-half"></i>
+                <span class="timer-display" id="fastingTimer">00:00:00</span>
+            </div>
+            <button class="btn btn-fasting" id="toggleFastingBtn">
+                <i class="fas fa-play"></i> بدء الصيام
+            </button>
+        </div>
 
-    <div class="vip-box">
-        <div class="section-title">🚫 أشياء يجب أن يصوم عنها العقل</div>
-
-        <div class="grid">
-
+        <!-- ==================== شبكة البطاقات ==================== -->
+        <div class="cards-grid">
+            <!-- بطاقة المحظورات -->
             <div class="card">
-                <h3>المحتوى التافه</h3>
-                <p>
-                    فيديوهات قصيرة بلا قيمة، ضجيج، معلومات عشوائية تستهلك الانتباه.
-                </p>
-                <div class="counter">تأثير: تشتيت التركيز</div>
-                <button onclick="blockItem(this)">
-                    منع الدخول
-                </button>
+                <div class="card-header blocked">
+                    <i class="fas fa-shield-haltered"></i> قائمة الحظر
+                </div>
+                <div class="cat-filters" id="categoryFilters">
+                    <button class="cat-btn active" data-cat="all">الكل</button>
+                    <button class="cat-btn" data-cat="مشاعر">😡 مشاعر</button>
+                    <button class="cat-btn" data-cat="عادات">📱 عادات</button>
+                    <button class="cat-btn" data-cat="أفكار">💭 أفكار</button>
+                </div>
+                <div class="tags-container" id="harmfulTagsContainer"></div>
+                <div class="add-row">
+                    <input type="text" id="newHarmfulInput" placeholder="أضف محظوراً جديداً ...">
+                    <button class="btn btn-danger" id="addHarmfulBtn"><i class="fas fa-plus"></i> إضافة</button>
+                </div>
             </div>
 
+            <!-- بطاقة الفحص -->
             <div class="card">
-                <h3>الدراما السامة</h3>
-                <p>
-                    مشاكل الناس، الجدالات الفارغة، الأخبار السلبية المستمرة.
-                </p>
-                <div class="counter">تأثير: استنزاف نفسي</div>
-                <button onclick="blockItem(this)">
-                    منع الدخول
-                </button>
+                <div class="card-header check">
+                    <i class="fas fa-magnifying-glass"></i> فحص المؤثرات
+                </div>
+                <div class="search-row">
+                    <input type="text" id="checkInput" placeholder="اكتب فكرة أو مؤثر للفحص ...">
+                    <button class="btn btn-primary" id="checkBtn"><i class="fas fa-check"></i> تحقق</button>
+                </div>
+                <div class="live-warning" id="liveWarning"></div>
+                <div id="resultDisplay" class="result-box"></div>
             </div>
-
-            <div class="card">
-                <h3>المقارنة المرضية</h3>
-                <p>
-                    مقارنة نفسك بحياة الآخرين على مواقع التواصل.
-                </p>
-                <div class="counter">تأثير: انخفاض الثقة</div>
-                <button onclick="blockItem(this)">
-                    منع الدخول
-                </button>
-            </div>
-
-            <div class="card">
-                <h3>الإدمان الرقمي</h3>
-                <p>
-                    التحقق المستمر من الهاتف بدون هدف حقيقي.
-                </p>
-                <div class="counter">تأثير: ضعف الانتباه</div>
-                <button onclick="blockItem(this)">
-                    منع الدخول
-                </button>
-            </div>
-
         </div>
     </div>
 
-    <div class="vip-box">
-        <div class="section-title">✅ أشياء يسمح لها بالدخول</div>
+    <script>
+        (function() {
+            // ==================== البيانات الافتراضية ====================
+            const defaultItems = [
+                { text: "الغضب", cat: "مشاعر" },
+                { text: "الحسد", cat: "مشاعر" },
+                { text: "التفكير السلبي", cat: "أفكار" },
+                { text: "وسائل التواصل المفرطة", cat: "عادات" },
+                { text: "الأخبار السيئة", cat: "عادات" },
+                { text: "مقارنة النفس", cat: "أفكار" },
+                { text: "الخوف من الفشل", cat: "مشاعر" },
+                { text: "القلق الزائد", cat: "مشاعر" },
+                { text: "التشاؤم", cat: "أفكار" },
+                { text: "النميمة", cat: "عادات" },
+                { text: "الإدمان الرقمي", cat: "عادات" },
+                { text: "العلاقات السامة", cat: "عادات" }
+            ];
 
-        <div class="grid">
+            // ==================== حالة التطبيق ====================
+            let harmfulList = [];
+            let fastingActive = false;
+            let fastingSeconds = 0;
+            let fastingInterval = null;
+            let fastingStartTime = null;
+            let totalChecks = 0;
+            let currentCategory = 'all';
 
-            <div class="card good">
-                <h3>التعلم</h3>
-                <p>
-                    كتب، برمجة، لغات، فلسفة، علوم، مهارات حقيقية.
-                </p>
-            </div>
+            const STORAGE_KEY = 'mindVipHarmfulListV2';
 
-            <div class="card good">
-                <h3>الهدوء</h3>
-                <p>
-                    التأمل، المشي، النوم الجيد، الصمت المؤقت.
-                </p>
-            </div>
+            // ==================== عناصر DOM ====================
+            const harmfulContainer = document.getElementById('harmfulTagsContainer');
+            const blockedCountEl = document.getElementById('blockedCount');
+            const checksCountEl = document.getElementById('checksCount');
+            const newInput = document.getElementById('newHarmfulInput');
+            const addBtn = document.getElementById('addHarmfulBtn');
+            const checkInput = document.getElementById('checkInput');
+            const checkBtn = document.getElementById('checkBtn');
+            const resultDisplay = document.getElementById('resultDisplay');
+            const liveWarning = document.getElementById('liveWarning');
+            const timerEl = document.getElementById('fastingTimer');
+            const fastingBtn = document.getElementById('toggleFastingBtn');
+            const catButtons = document.querySelectorAll('.cat-btn');
+            const body = document.body;
 
-            <div class="card good">
-                <h3>الأهداف</h3>
-                <p>
-                    التركيز على بناء مستقبلك بدلاً من استهلاك حياة الآخرين.
-                </p>
-            </div>
+            // ==================== دوال البيانات ====================
+            function loadData() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        harmfulList = JSON.parse(stored);
+                        if (!Array.isArray(harmfulList)) harmfulList = [...defaultItems];
+                    } catch (e) {
+                        harmfulList = [...defaultItems];
+                    }
+                } else {
+                    harmfulList = [...defaultItems];
+                }
 
-            <div class="card good">
-                <h3>الأفكار النقية</h3>
-                <p>
-                    ما يجعلك أكثر قوة ووعياً وانضباطاً.
-                </p>
-            </div>
+                // تحميل حالة الصيام
+                const savedFasting = localStorage.getItem('mindVipFasting');
+                if (savedFasting === 'active') {
+                    const start = localStorage.getItem('mindVipFastingStart');
+                    if (start) {
+                        fastingStartTime = parseInt(start, 10);
+                        fastingActive = true;
+                        fastingSeconds = Math.floor((Date.now() - fastingStartTime) / 1000);
+                        startTimerInterval();
+                    }
+                }
 
-        </div>
-    </div>
+                totalChecks = parseInt(localStorage.getItem('mindVipTotalChecks') || '0', 10);
+                updateStats();
+            }
 
-    <div class="quote">
-        “كل شيء تسمح له بالدخول إلى عقلك  
-        يعيد تشكيل شخصيتك.”
-    </div>
+            function saveData() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(harmfulList));
+                updateStats();
+            }
 
-</div>
+            function updateStats() {
+                if (blockedCountEl) blockedCountEl.textContent = harmfulList.length;
+                if (checksCountEl) checksCountEl.textContent = totalChecks;
+            }
 
-<footer>
-    نظام حماية العقل • VIP MIND FILTER
-</footer>
+            function getFilteredItems() {
+                if (currentCategory === 'all') return harmfulList;
+                return harmfulList.filter(item => item.cat === currentCategory);
+            }
 
-<script>
-function blockItem(button){
+            // ==================== عرض المحظورات ====================
+            function renderTags() {
+                if (!harmfulContainer) return;
+                const items = getFilteredItems();
+                harmfulContainer.innerHTML = '';
 
-    const card = button.parentElement;
+                if (items.length === 0) {
+                    harmfulContainer.innerHTML =
+                        '<div style="color:#8899bb; padding:1rem; text-align:center; width:100%;">لا توجد محظورات في هذا التصنيف</div>';
+                    return;
+                }
 
-    card.style.opacity = "0.4";
-    card.style.transform = "scale(0.96)";
-    card.style.border = "1px solid #ef4444";
+                items.forEach((item) => {
+                    const realIndex = harmfulList.indexOf(item);
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.innerHTML = `
+                        <i class="fas fa-circle-xmark"></i> 
+                        ${escapeHTML(item.text)} 
+                        <button class="delete-tag" data-index="${realIndex}" title="حذف">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    harmfulContainer.appendChild(tag);
+                });
 
-    button.innerText = "تم الحظر";
-    button.style.background = "#ef4444";
+                // ربط أزرار الحذف
+                document.querySelectorAll('.delete-tag').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.getAttribute('data-index'), 10);
+                        if (!isNaN(idx) && idx >= 0 && idx < harmfulList.length) {
+                            harmfulList.splice(idx, 1);
+                            saveData();
+                            renderTags();
+                            clearResult();
+                        }
+                    });
+                });
+            }
 
-    button.disabled = true;
-}
-</script>
+            function escapeHTML(str) {
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            }
 
+            // ==================== إضافة عنصر ====================
+            function addHarmfulItem() {
+                const text = newInput.value.trim();
+                if (!text) return;
+
+                if (harmfulList.some(item => item.text === text)) {
+                    alert('⚠️ هذا العنصر موجود بالفعل في قائمة المحظورات.');
+                    return;
+                }
+
+                let cat = 'عادات';
+                if (text.includes('غضب') || text.includes('خوف') || text.includes('قلق') || text.includes(
+                        'حسد')) {
+                    cat = 'مشاعر';
+                } else if (text.includes('تفكير') || text.includes('تشاؤم') || text.includes('سلبية')) {
+                    cat = 'أفكار';
+                }
+
+                harmfulList.push({ text, cat });
+                saveData();
+                renderTags();
+                newInput.value = '';
+                newInput.focus();
+            }
+
+            if (addBtn) addBtn.addEventListener('click', addHarmfulItem);
+            if (newInput) {
+                newInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addHarmfulItem();
+                    }
+                });
+            }
+
+            // ==================== فحص النص ====================
+            function performCheck() {
+                const thought = checkInput.value.trim();
+                if (!thought) {
+                    resultDisplay.innerHTML = '⚠️ الرجاء إدخال نص لفحصه';
+                    resultDisplay.className = 'result-box';
+                    return;
+                }
+
+                totalChecks++;
+                localStorage.setItem('mindVipTotalChecks', totalChecks);
+                updateStats();
+
+                const found = harmfulList.some(item =>
+                    thought.includes(item.text) || item.text.includes(thought)
+                );
+
+                if (found) {
+                    resultDisplay.innerHTML = `🚫 "${escapeHTML(thought)}" ممنوع من دخول العقل`;
+                    resultDisplay.className = 'result-box blocked';
+                    body.className = 'state-alert';
+                    setTimeout(() => { body.className = 'state-calm'; }, 900);
+                } else {
+                    resultDisplay.innerHTML = `✅ "${escapeHTML(thought)}" مسموح .. مرحباً به`;
+                    resultDisplay.className = 'result-box allowed';
+                    body.className = 'state-calm';
+                }
+            }
+
+            function clearResult() {
+                if (resultDisplay) {
+                    resultDisplay.innerHTML = '';
+                    resultDisplay.className = 'result-box';
+                }
+            }
+
+            if (checkInput) {
+                checkInput.addEventListener('input', function() {
+                    const val = this.value.trim();
+                    if (val && harmfulList.some(item => val.includes(item.text))) {
+                        liveWarning.textContent = '⚠️ هذا النص يحتوي على عنصر محظور!';
+                    } else {
+                        liveWarning.textContent = '';
+                    }
+                });
+
+                checkInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        performCheck();
+                    }
+                });
+            }
+
+            if (checkBtn) checkBtn.addEventListener('click', performCheck);
+
+            // ==================== تصفية التصنيفات ====================
+            catButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    catButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.getAttribute('data-cat');
+                    renderTags();
+                });
+            });
+
+            // ==================== مؤقت الصيام ====================
+            function formatTime(seconds) {
+                const hrs = Math.floor(seconds / 3600);
+                const mins = Math.floor((seconds % 3600) / 60);
+                const secs = seconds % 60;
+                return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            function updateTimerDisplay() {
+                if (timerEl) timerEl.textContent = formatTime(fastingSeconds);
+            }
+
+            function startTimerInterval() {
+                if (fastingInterval) clearInterval(fastingInterval);
+                fastingInterval = setInterval(() => {
+                    if (fastingActive) {
+                        fastingSeconds++;
+                        updateTimerDisplay();
+                    }
+                }, 1000);
+            }
+
+            function updateFastingButton() {
+                if (!fastingBtn) return;
+                if (fastingActive) {
+                    fastingBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف الصيام';
+                    fastingBtn.classList.add('active');
+                } else {
+                    fastingBtn.innerHTML = '<i class="fas fa-play"></i> بدء الصيام';
+                    fastingBtn.classList.remove('active');
+                }
+            }
+
+            function toggleFasting() {
+                fastingActive = !fastingActive;
+
+                if (fastingActive) {
+                    fastingStartTime = Date.now();
+                    localStorage.setItem('mindVipFasting', 'active');
+                    localStorage.setItem('mindVipFastingStart', fastingStartTime);
+                    startTimerInterval();
+                } else {
+                    localStorage.setItem('mindVipFasting', 'inactive');
+                    localStorage.removeItem('mindVipFastingStart');
+                    if (fastingInterval) {
+                        clearInterval(fastingInterval);
+                        fastingInterval = null;
+                    }
+                }
+
+                updateFastingButton();
+                updateTimerDisplay();
+            }
+
+            if (fastingBtn) fastingBtn.addEventListener('click', toggleFasting);
+
+            // ==================== بدء التطبيق ====================
+            loadData();
+            renderTags();
+            updateTimerDisplay();
+            if (fastingActive) startTimerInterval();
+            updateFastingButton();
+            clearResult();
+        })();
+    </script>
 </body>
 </html>
