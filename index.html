@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تصفية العقل - منصة VIP</title>
+    <title>تصفية العقل | منصة العقل VIP</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,395 +14,479 @@
         }
 
         body {
-            background: #0a0f1a;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #050510;
+            font-family: 'Tajawal', sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            padding: 2rem;
-            color: #eef5ff;
-            transition: background 0.5s;
+            padding: 1.5rem;
+            color: #ffffff;
+            transition: background 0.6s;
         }
 
-        body.mode-calm {
-            background: radial-gradient(circle at 20% 30%, #0f1a2f, #030612);
+        body.state-calm {
+            background: radial-gradient(circle at 30% 20%, #0b1424, #020211);
         }
-        body.mode-alert {
-            background: radial-gradient(circle at 20% 30%, #2f0f1a, #120306);
+
+        body.state-alert {
+            background: radial-gradient(circle at 30% 20%, #2a0e16, #0d0104);
         }
 
         .container {
             width: 100%;
-            max-width: 850px;
-            background: rgba(18, 25, 45, 0.8);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            border-radius: 4rem;
-            padding: 3rem 2.5rem;
-            box-shadow: 0 40px 60px rgba(0,0,0,0.7), inset 0 0 40px rgba(0,160,255,0.1);
+            max-width: 950px;
+            background: rgba(10, 15, 30, 0.75);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            border-radius: 2.5rem;
+            padding: 2.8rem 2.5rem;
+            box-shadow: 0 0 60px rgba(0, 140, 255, 0.25), inset 0 0 30px rgba(0, 180, 255, 0.1);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* شريط العنوان VIP */
-        .vip-bar {
+        .container::before {
+            content: "";
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(0, 160, 255, 0.15) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* الشريط العلوي */
+        .top-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
         }
-        .crown-icon {
-            font-size: 2.5rem;
-            filter: drop-shadow(0 0 15px gold);
+
+        .vip-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.5rem 2rem;
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 215, 0, 0.4);
+        }
+
+        .vip-logo .crown {
+            font-size: 2.4rem;
+            filter: drop-shadow(0 0 15px #ffbb00);
+        }
+
+        .vip-logo span {
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            color: #ffd966;
+        }
+
+        .stats-panel {
+            display: flex;
+            gap: 2.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.6rem 2.5rem;
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .stat-item {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: linear-gradient(135deg, #ffd966, #e5a500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-        .stats {
-            display: flex;
-            gap: 2rem;
-            background: rgba(0,0,0,0.4);
-            padding: 0.6rem 2rem;
-            border-radius: 3rem;
             font-size: 1.2rem;
         }
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-        .stat .icon {
-            font-size: 1.9rem;
-        }
-        .stat .value {
-            font-weight: bold;
-            color: #ffcc80;
+
+        .stat-item .icon {
+            font-size: 2rem;
+            filter: drop-shadow(0 0 10px currentColor);
         }
 
+        .stat-item .number {
+            font-weight: 900;
+            color: #ffb347;
+            font-size: 1.5rem;
+        }
+
+        /* عنوان رئيسي */
         .main-title {
-            font-size: 4.5rem;
+            font-size: 5.5rem;
             font-weight: 900;
             text-align: center;
-            background: linear-gradient(to right, #d0e4ff, #7ab0ff, #c0dcff);
+            background: linear-gradient(to right, #a0d0ff, #60a0ff, #c0e0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 0.5rem;
-            filter: drop-shadow(0 0 30px #0066ff);
+            margin-bottom: 0.2rem;
+            line-height: 1.1;
+            filter: drop-shadow(0 0 35px #0066ff);
             letter-spacing: 3px;
-            line-height: 1.2;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 1.4rem;
-            color: #a0bbdf;
-            border-bottom: 1px dashed rgba(255,255,255,0.2);
-            padding-bottom: 1.2rem;
-            margin-bottom: 2.5rem;
+            font-size: 1.5rem;
+            color: #90b8ee;
+            margin-bottom: 3rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-        }
-        .subtitle .brain-icon {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 0 10px #4da6ff);
+            gap: 0.7rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1.5rem;
         }
 
-        /* لوحة الصيام */
-        .fasting-panel {
-            background: rgba(15, 25, 45, 0.7);
-            border-radius: 3rem;
-            padding: 1.2rem 2rem;
+        .subtitle .brain {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 15px #4488ff);
+        }
+
+        /* بطاقة الصيام */
+        .fasting-card {
+            background: rgba(15, 25, 45, 0.6);
+            border: 1px solid rgba(0, 160, 255, 0.4);
+            border-radius: 2rem;
+            padding: 1.2rem 2.2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2.5rem;
-            border: 1px solid rgba(100,180,255,0.3);
+            gap: 1.2rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(15px);
         }
-        .fasting-timer-box {
+
+        .timer-area {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1rem;
         }
-        .fasting-icon {
+
+        .timer-icon {
+            font-size: 3rem;
+            filter: drop-shadow(0 0 18px #00ccff);
+        }
+
+        .time-display {
             font-size: 2.8rem;
-            filter: drop-shadow(0 0 12px #00a6ff);
-        }
-        .timer {
-            font-size: 2.3rem;
             font-weight: 700;
-            font-family: 'Courier New', monospace;
-            background: #0a1428;
-            padding: 0.2rem 1.8rem;
-            border-radius: 2.5rem;
-            color: #8cd4ff;
-            letter-spacing: 3px;
+            font-family: monospace;
+            background: #0a1226;
+            padding: 0.2rem 2rem;
+            border-radius: 2rem;
+            color: #7cc8ff;
+            letter-spacing: 5px;
+            border: 1px solid rgba(0, 200, 255, 0.3);
         }
+
         .btn {
-            padding: 0.9rem 2rem;
-            border-radius: 3rem;
+            padding: 1rem 2.2rem;
+            border-radius: 2.5rem;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
             border: none;
             transition: 0.3s;
             display: flex;
             align-items: center;
             gap: 0.7rem;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.5);
             color: white;
-        }
-        .btn-fasting {
-            background: #1b3150;
-        }
-        .btn-fasting.active {
-            background: #1f6d4a;
-            box-shadow: 0 0 25px #1f6d4a88;
-        }
-        .btn-icon {
-            font-size: 1.7rem;
+            background: #1a2c44;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
 
-        /* الشبكة */
-        .grid-2 {
+        .btn-fasting {
+            background: #0e2a44;
+            border: 1px solid #2d6090;
+        }
+
+        .btn-fasting.active {
+            background: #145c3e;
+            border-color: #2ecc71;
+            box-shadow: 0 0 25px #1f8b4c;
+        }
+
+        .btn-icon {
+            font-size: 1.8rem;
+        }
+
+        /* الشبكة الرئيسية */
+        .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            gap: 2.2rem;
         }
-        @media (max-width: 700px) {
-            .grid-2 {
+
+        @media (max-width: 750px) {
+            .dashboard-grid {
                 grid-template-columns: 1fr;
             }
             .main-title {
-                font-size: 3rem;
+                font-size: 3.5rem;
             }
         }
 
         .card {
-            background: rgba(18, 26, 44, 0.7);
-            border-radius: 2.5rem;
-            padding: 1.8rem;
-            border: 1px solid rgba(255,255,255,0.12);
-            backdrop-filter: blur(10px);
+            background: rgba(12, 20, 35, 0.65);
+            backdrop-filter: blur(20px);
+            border-radius: 2.2rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: 0.3s;
         }
+
         .card-header {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
+            margin-bottom: 1.6rem;
+            font-size: 1.7rem;
             font-weight: 700;
         }
-        .card-header .icon-lg {
+
+        .card-header .head-icon {
             font-size: 2.8rem;
-            filter: drop-shadow(0 0 12px currentColor);
+            filter: drop-shadow(0 0 15px currentColor);
         }
 
-        /* المحظورات */
         .harmful-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.7rem;
-            margin-bottom: 1.5rem;
-            max-height: 200px;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+            max-height: 210px;
             overflow-y: auto;
         }
-        .tag {
-            background: #2a1a28;
-            border: 1px solid #b94a6c;
+
+        .tag-item {
+            background: #251a28;
+            border: 1px solid #c94a6e;
             border-radius: 3rem;
-            padding: 0.5rem 1.2rem;
+            padding: 0.6rem 1.3rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.95rem;
             color: #f7c4c4;
         }
-        .tag .icon-small {
+
+        .tag-item .tag-icon {
             font-size: 1.3rem;
         }
-        .tag button {
+
+        .tag-item button {
             background: none;
             border: none;
-            color: #ee9999;
-            font-size: 1.3rem;
+            color: #ee8888;
+            font-size: 1.4rem;
             cursor: pointer;
-            line-height: 1;
-        }
-        .tag button:hover {
-            color: white;
-            transform: scale(1.3);
-        }
-
-        .cat-row {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-        .cat-btn {
-            background: #1e2537;
-            border: 1px solid #3a4b6a;
-            color: #ccd;
-            padding: 0.4rem 1.1rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-size: 0.85rem;
             transition: 0.2s;
         }
-        .cat-btn.active {
-            background: #3a2a52;
-            border-color: #b47cff;
+
+        .tag-item button:hover {
             color: white;
+            transform: scale(1.4);
         }
 
-        .add-row {
+        .category-row {
             display: flex;
-            gap: 0.5rem;
-        }
-        .add-row input {
-            flex: 1;
-            background: #1b2337;
-            border: 1px solid #3d4f6e;
-            padding: 0.7rem 1.2rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-        }
-        .btn-add {
-            background: #661122;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
         }
 
-        /* فحص */
-        .search-row {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .search-row input {
-            flex: 1;
-            background: #1b2337;
-            border: 1px solid #3d4f6e;
-            padding: 0.8rem 1.2rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-        }
-        .btn-check {
-            background: #0055cc;
-            box-shadow: 0 8px 18px rgba(0,68,170,0.5);
-        }
-        .btn-check:hover {
-            background: #0066ee;
-        }
-        .live-warning {
+        .cat-btn {
+            background: #1b2339;
+            border: 1px solid #3d5170;
+            color: #ccddea;
+            padding: 0.5rem 1.3rem;
+            border-radius: 2rem;
+            cursor: pointer;
             font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .cat-btn.active {
+            background: #392a55;
+            border-color: #b07cff;
+            color: white;
+            box-shadow: 0 0 15px #7b4aff;
+        }
+
+        .add-custom {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .add-custom input {
+            flex: 1;
+            background: #111b2f;
+            border: 1px solid #3e5170;
+            padding: 0.8rem 1.3rem;
+            border-radius: 2.5rem;
+            color: white;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .btn-danger {
+            background: #68102a;
+            border: 1px solid #c94060;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: #111b2f;
+            border: 1px solid #3e5170;
+            padding: 0.9rem 1.4rem;
+            border-radius: 2.5rem;
+            color: white;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #0044aa;
+            border: 1px solid #3d7eff;
+            box-shadow: 0 8px 18px rgba(0,68,170,0.7);
+        }
+
+        .btn-primary:hover {
+            background: #0055cc;
+        }
+
+        .live-warning {
+            font-size: 0.95rem;
             color: #ffaa88;
-            min-height: 1.4rem;
+            min-height: 1.6rem;
             margin-bottom: 0.5rem;
         }
-        .result-box {
-            padding: 1rem;
+
+        .result-display {
+            padding: 1.2rem;
             border-radius: 2rem;
             font-weight: bold;
             text-align: center;
-            font-size: 1.2rem;
-            background: rgba(0,0,0,0.4);
+            font-size: 1.3rem;
+            background: rgba(0, 0, 0, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.6rem;
+            border: 1px solid transparent;
+        }
+
+        .result-blocked {
+            border-color: #ff4d6d;
+            color: #ffb3b3;
+        }
+
+        .result-allowed {
+            border-color: #4dff91;
+            color: #b3ffcc;
         }
     </style>
 </head>
-<body class="mode-calm">
+<body class="state-calm">
     <div class="container">
-        <!-- شريط VIP -->
-        <div class="vip-bar">
-            <div class="crown-icon">
-                <span>👑</span> منصة العقل VIP
-            </div>
-            <div class="stats">
-                <div class="stat">
-                    <span class="icon">🚫</span>
-                    <span>محظور:</span>
-                    <span class="value" id="blockedCount">0</span>
+        <div class="content">
+            <!-- الشريط العلوي -->
+            <div class="top-bar">
+                <div class="vip-logo">
+                    <span class="crown">👑</span>
+                    <span>عقل VIP</span>
                 </div>
-                <div class="stat">
-                    <span class="icon">✅</span>
-                    <span>فحص:</span>
-                    <span class="value" id="checksCount">0</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- العنوان الرئيسي -->
-        <h1 class="main-title">تصفية العقل</h1>
-        <div class="subtitle">
-            <span class="brain-icon">🧠</span> عقلك منصة خاصة .. لا يدخلها ما يضر
-        </div>
-
-        <!-- الصيام -->
-        <div class="fasting-panel">
-            <div class="fasting-timer-box">
-                <span class="fasting-icon">⏳</span>
-                <span class="timer" id="fastingTimer">00:00:00</span>
-            </div>
-            <button class="btn btn-fasting" id="toggleFastingBtn">
-                <span class="btn-icon">▶</span> بدء الصيام
-            </button>
-        </div>
-
-        <!-- المحتوى الأساسي -->
-        <div class="grid-2">
-            <!-- المحظورات -->
-            <div class="card">
-                <div class="card-header" style="color: #ffb3b3;">
-                    <span class="icon-lg">⛔</span> قائمة الحظر
-                </div>
-                <div class="cat-row" id="categoryFilters">
-                    <button class="cat-btn active" data-cat="all">الكل</button>
-                    <button class="cat-btn" data-cat="مشاعر">😡 مشاعر</button>
-                    <button class="cat-btn" data-cat="عادات">📱 عادات</button>
-                    <button class="cat-btn" data-cat="أفكار">💭 أفكار</button>
-                </div>
-                <div class="harmful-tags" id="harmfulTagsContainer"></div>
-                <div class="add-row">
-                    <input type="text" id="newHarmfulInput" placeholder="أضف محظوراً جديداً...">
-                    <button class="btn btn-add" id="addHarmfulBtn"><span>➕</span> إضافة</button>
+                <div class="stats-panel">
+                    <div class="stat-item">
+                        <span class="icon">🚫</span>
+                        <span>محظور</span>
+                        <span class="number" id="blockedCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="icon">✅</span>
+                        <span>فحص</span>
+                        <span class="number" id="checksCount">0</span>
+                    </div>
                 </div>
             </div>
 
-            <!-- فحص المؤثرات -->
-            <div class="card">
-                <div class="card-header" style="color: #b3ffcc;">
-                    <span class="icon-lg">🔍</span> فحص المؤثرات
+            <!-- العنوان -->
+            <h1 class="main-title">تصفية العقل</h1>
+            <div class="subtitle">
+                <span class="brain">🧠</span> لا يدخل عقلك إلا ما ينفع
+            </div>
+
+            <!-- بطاقة الصيام -->
+            <div class="fasting-card">
+                <div class="timer-area">
+                    <span class="timer-icon">⏳</span>
+                    <span class="time-display" id="fastingTimer">00:00:00</span>
                 </div>
-                <div class="search-row">
-                    <input type="text" id="checkInput" placeholder="اكتب فكرة أو مؤثر للفحص...">
-                    <button class="btn btn-check" id="checkBtn"><span>✅</span> تحقق</button>
+                <button class="btn btn-fasting" id="toggleFastingBtn">
+                    <span class="btn-icon">▶</span> بدء الصيام
+                </button>
+            </div>
+
+            <!-- الشبكة -->
+            <div class="dashboard-grid">
+                <!-- المحظورات -->
+                <div class="card">
+                    <div class="card-header" style="color: #ffb3b3;">
+                        <span class="head-icon">⛔</span> المحظورات
+                    </div>
+                    <div class="category-row" id="categoryFilters">
+                        <button class="cat-btn active" data-cat="all">الكل</button>
+                        <button class="cat-btn" data-cat="مشاعر">😡 مشاعر</button>
+                        <button class="cat-btn" data-cat="عادات">📱 عادات</button>
+                        <button class="cat-btn" data-cat="أفكار">💭 أفكار</button>
+                    </div>
+                    <div class="harmful-tags" id="harmfulTagsContainer"></div>
+                    <div class="add-custom">
+                        <input type="text" id="newHarmfulInput" placeholder="أضف محظوراً ...">
+                        <button class="btn btn-danger" id="addHarmfulBtn"><span>➕</span> إضافة</button>
+                    </div>
                 </div>
-                <div class="live-warning" id="liveWarning"></div>
-                <div id="resultDisplay" class="result-box"></div>
+
+                <!-- الفحص -->
+                <div class="card">
+                    <div class="card-header" style="color: #b3ffcc;">
+                        <span class="head-icon">🔍</span> فحص المؤثرات
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="checkInput" placeholder="اكتب فكرة أو مؤثر ...">
+                        <button class="btn btn-primary" id="checkBtn"><span>✅</span> تحقق</button>
+                    </div>
+                    <div class="live-warning" id="liveWarning"></div>
+                    <div id="resultDisplay" class="result-display"></div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        (function() {
-            // قائمة افتراضية مع تصنيفات
+        (() => {
+            // البيانات الافتراضية
             const defaultItems = [
                 { text: "الغضب", cat: "مشاعر" },
                 { text: "الحسد", cat: "مشاعر" },
@@ -417,15 +503,12 @@
             ];
 
             let harmfulList = [];
-            const STORAGE_KEY = 'mindVipHarmfulListV2';
-            let fastingActive = false;
-            let fastingSeconds = 0;
-            let fastingInterval = null;
-            let fastingStartTime = null;
+            const STORAGE = 'mindVipHarmfulListV2';
+            let fastingActive = false, fastingSeconds = 0, fastingInterval = null, fastingStart = null;
             let totalChecks = 0;
-            let currentCategory = 'all';
+            let currentCat = 'all';
 
-            // عناصر DOM
+            // DOM
             const harmfulContainer = document.getElementById('harmfulTagsContainer');
             const blockedCountEl = document.getElementById('blockedCount');
             const checksCountEl = document.getElementById('checksCount');
@@ -440,38 +523,32 @@
             const catButtons = document.querySelectorAll('.cat-btn');
             const body = document.body;
 
-            // تحميل البيانات
-            function loadData() {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    try { harmfulList = JSON.parse(stored); if (!Array.isArray(harmfulList)) harmfulList = [...defaultItems]; }
-                    catch { harmfulList = [...defaultItems]; }
-                } else {
-                    harmfulList = [...defaultItems];
-                }
-                // حالة الصيام
-                const savedFasting = localStorage.getItem('mindVipFasting');
-                if (savedFasting === 'active') {
+            // تحميل
+            function load() {
+                const s = localStorage.getItem(STORAGE);
+                harmfulList = s ? (JSON.parse(s) || [...defaultItems]) : [...defaultItems];
+                const fActive = localStorage.getItem('mindVipFasting');
+                if (fActive === 'active') {
                     const start = localStorage.getItem('mindVipFastingStart');
                     if (start) {
-                        fastingStartTime = parseInt(start, 10);
+                        fastingStart = parseInt(start, 10);
                         fastingActive = true;
-                        fastingSeconds = Math.floor((Date.now() - fastingStartTime) / 1000);
-                        startTimer();
+                        fastingSeconds = Math.floor((Date.now() - fastingStart) / 1000);
+                        startTimerInterval();
                     }
                 }
                 totalChecks = parseInt(localStorage.getItem('mindVipTotalChecks') || '0', 10);
                 updateStats();
             }
 
-            function saveList() { localStorage.setItem(STORAGE_KEY, JSON.stringify(harmfulList)); updateStats(); }
+            function save() { localStorage.setItem(STORAGE, JSON.stringify(harmfulList)); updateStats(); }
             function updateStats() {
                 if (blockedCountEl) blockedCountEl.textContent = harmfulList.length;
                 if (checksCountEl) checksCountEl.textContent = totalChecks;
             }
 
             function getFiltered() {
-                return currentCategory === 'all' ? harmfulList : harmfulList.filter(i => i.cat === currentCategory);
+                return currentCat === 'all' ? harmfulList : harmfulList.filter(i => i.cat === currentCat);
             }
 
             function renderTags() {
@@ -479,139 +556,109 @@
                 const items = getFiltered();
                 harmfulContainer.innerHTML = '';
                 if (items.length === 0) {
-                    harmfulContainer.innerHTML = '<div style="color:#888; padding:0.5rem;">لا توجد محظورات</div>';
+                    harmfulContainer.innerHTML = '<div style="color:#888; padding:0.8rem;">لا توجد محظورات</div>';
                     return;
                 }
-                items.forEach((item) => {
+                items.forEach(item => {
                     const idx = harmfulList.indexOf(item);
                     const tag = document.createElement('span');
-                    tag.className = 'tag';
-                    tag.innerHTML = `<span class="icon-small">🚫</span> ${escapeHTML(item.text)} <button data-idx="${idx}">✕</button>`;
+                    tag.className = 'tag-item';
+                    tag.innerHTML = `<span class="tag-icon">🚫</span> ${esc(item.text)} <button data-idx="${idx}">✕</button>`;
                     harmfulContainer.appendChild(tag);
                 });
-                // ربط أزرار الحذف
-                document.querySelectorAll('.tag button').forEach(btn => {
+                document.querySelectorAll('.tag-item button').forEach(btn => {
                     btn.addEventListener('click', function(e) {
-                        const index = parseInt(this.dataset.idx, 10);
-                        if (!isNaN(index) && index >= 0 && index < harmfulList.length) {
-                            harmfulList.splice(index, 1);
-                            saveList();
-                            renderTags();
-                            clearResult();
+                        const i = parseInt(this.dataset.idx, 10);
+                        if (!isNaN(i) && i >= 0 && i < harmfulList.length) {
+                            harmfulList.splice(i, 1);
+                            save(); renderTags(); clearResult();
                         }
                     });
                 });
             }
 
-            function escapeHTML(str) {
-                return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            }
+            function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-            // إضافة عنصر
             function addItem() {
                 const text = newInput.value.trim();
                 if (!text) return;
-                if (harmfulList.some(item => item.text === text)) {
-                    alert('هذا العنصر موجود بالفعل.');
-                    return;
-                }
+                if (harmfulList.some(i => i.text === text)) { alert('موجود مسبقاً'); return; }
                 let cat = 'عادات';
-                if (text.includes('غضب') || text.includes('خوف') || text.includes('قلق') || text.includes('حسد')) cat = 'مشاعر';
-                else if (text.includes('تفكير') || text.includes('تشاؤم') || text.includes('سلبية')) cat = 'أفكار';
-                harmfulList.push({ text, cat });
-                saveList();
-                renderTags();
-                newInput.value = '';
+                if (text.includes('غضب')||text.includes('خوف')||text.includes('قلق')||text.includes('حسد')) cat='مشاعر';
+                else if (text.includes('تفكير')||text.includes('تشاؤم')||text.includes('سلبية')) cat='أفكار';
+                harmfulList.push({text, cat});
+                save(); renderTags(); newInput.value = '';
             }
             addBtn?.addEventListener('click', addItem);
-            newInput?.addEventListener('keypress', e => { if (e.key === 'Enter') addItem(); });
+            newInput?.addEventListener('keypress', e => { if(e.key==='Enter') addItem(); });
 
-            // فحص النص
-            function checkText() {
+            function performCheck() {
                 const thought = checkInput.value.trim();
-                if (!thought) {
-                    resultDisplay.innerHTML = '⚠️ الرجاء إدخال نص للفحص';
-                    return;
-                }
-                totalChecks++;
-                localStorage.setItem('mindVipTotalChecks', totalChecks);
-                updateStats();
-
-                const found = harmfulList.some(item => thought.includes(item.text) || item.text.includes(thought));
+                if (!thought) { resultDisplay.innerHTML = '⚠️ أدخل شيئاً للفحص'; resultDisplay.className = 'result-display'; return; }
+                totalChecks++; localStorage.setItem('mindVipTotalChecks', totalChecks); updateStats();
+                const found = harmfulList.some(i => thought.includes(i.text) || i.text.includes(thought));
                 if (found) {
-                    resultDisplay.innerHTML = `🚫 "${escapeHTML(thought)}" ممنوع من دخول العقل`;
-                    body.className = 'mode-alert';
-                    setTimeout(() => { body.className = 'mode-calm'; }, 800);
+                    resultDisplay.innerHTML = `🚫 "${esc(thought)}" ممنوع من دخول العقل`;
+                    resultDisplay.className = 'result-display result-blocked';
+                    body.className = 'state-alert';
+                    setTimeout(() => { body.className = 'state-calm'; }, 800);
                 } else {
-                    resultDisplay.innerHTML = `✅ "${escapeHTML(thought)}" مسموح .. مرحباً به`;
-                    body.className = 'mode-calm';
+                    resultDisplay.innerHTML = `✅ "${esc(thought)}" مسموح .. مرحباً به`;
+                    resultDisplay.className = 'result-display result-allowed';
+                    body.className = 'state-calm';
                 }
             }
-            function clearResult() { if (resultDisplay) resultDisplay.innerHTML = ''; }
+            function clearResult() { if(resultDisplay) { resultDisplay.innerHTML = ''; resultDisplay.className = 'result-display'; } }
 
             checkInput?.addEventListener('input', function() {
-                const val = this.value.trim();
-                if (val && harmfulList.some(item => val.includes(item.text))) {
-                    liveWarning.textContent = '⚠️ هذا النص يحتوي على عنصر محظور!';
-                } else {
-                    liveWarning.textContent = '';
-                }
+                const v = this.value.trim();
+                liveWarning.textContent = (v && harmfulList.some(i => v.includes(i.text))) ? '⚠️ هذا النص يحتوي على عنصر محظور!' : '';
             });
-            checkBtn?.addEventListener('click', checkText);
-            checkInput?.addEventListener('keypress', e => { if (e.key === 'Enter') checkText(); });
+            checkBtn?.addEventListener('click', performCheck);
+            checkInput?.addEventListener('keypress', e => { if(e.key==='Enter') performCheck(); });
 
-            // التصنيفات
-            catButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    catButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategory = this.dataset.cat;
-                    renderTags();
-                });
-            });
+            catButtons.forEach(b => b.addEventListener('click', function() {
+                catButtons.forEach(b=>b.classList.remove('active'));
+                this.classList.add('active');
+                currentCat = this.dataset.cat;
+                renderTags();
+            }));
 
-            // مؤقت الصيام
-            function formatTime(sec) {
-                const h = Math.floor(sec / 3600);
-                const m = Math.floor((sec % 3600) / 60);
-                const s = sec % 60;
-                return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+            function fmtTime(s) {
+                return `${String(Math.floor(s/3600)).padStart(2,'0')}:${String(Math.floor((s%3600)/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
             }
-            function updateTimerDisplay() { if (timerEl) timerEl.textContent = formatTime(fastingSeconds); }
-            function startTimer() {
-                if (fastingInterval) clearInterval(fastingInterval);
-                fastingInterval = setInterval(() => {
-                    if (fastingActive) { fastingSeconds++; updateTimerDisplay(); }
-                }, 1000);
+            function updateTimer() { if(timerEl) timerEl.textContent = fmtTime(fastingSeconds); }
+            function startTimerInterval() {
+                if(fastingInterval) clearInterval(fastingInterval);
+                fastingInterval = setInterval(() => { if(fastingActive) { fastingSeconds++; updateTimer(); } }, 1000);
             }
-            function updateFastingButton() {
-                if (!fastingBtn) return;
+            function updateFastingBtn() {
+                if(!fastingBtn) return;
                 fastingBtn.innerHTML = fastingActive ? '<span class="btn-icon">⏸️</span> إيقاف الصيام' : '<span class="btn-icon">▶</span> بدء الصيام';
                 fastingBtn.classList.toggle('active', fastingActive);
             }
             function toggleFasting() {
                 fastingActive = !fastingActive;
-                if (fastingActive) {
-                    fastingStartTime = Date.now();
-                    localStorage.setItem('mindVipFasting', 'active');
-                    localStorage.setItem('mindVipFastingStart', fastingStartTime);
-                    startTimer();
+                if(fastingActive) {
+                    fastingStart = Date.now();
+                    localStorage.setItem('mindVipFasting','active');
+                    localStorage.setItem('mindVipFastingStart', fastingStart);
+                    startTimerInterval();
                 } else {
-                    localStorage.setItem('mindVipFasting', 'inactive');
+                    localStorage.setItem('mindVipFasting','inactive');
                     localStorage.removeItem('mindVipFastingStart');
-                    if (fastingInterval) { clearInterval(fastingInterval); fastingInterval = null; }
+                    if(fastingInterval) { clearInterval(fastingInterval); fastingInterval = null; }
                 }
-                updateFastingButton();
-                updateTimerDisplay();
+                updateFastingBtn(); updateTimer();
             }
             fastingBtn?.addEventListener('click', toggleFasting);
 
-            // بدء التطبيق
-            loadData();
+            // انطلاق
+            load();
             renderTags();
-            updateTimerDisplay();
-            if (fastingActive) startTimer();
-            updateFastingButton();
+            updateTimer();
+            if(fastingActive) startTimerInterval();
+            updateFastingBtn();
         })();
     </script>
 </body>
