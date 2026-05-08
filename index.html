@@ -2,11 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>عجلة الاختيار العشوائي | Random Choice Wheel</title>
-    <!-- Font Awesome 6 للأيقونات -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>عجلة الاختيار العشوائي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- مكتبة المؤثرات الاحتفالية -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <style>
         * {
@@ -18,96 +16,94 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: radial-gradient(ellipse at center, #1a1a2e 0%, #0f0f1a 100%);
-            min-height: 100vh;
+            height: 100dvh;
+            overflow: hidden;  /* يمنع التمرير */
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             color: #e0e0e0;
             direction: rtl;
+            touch-action: manipulation; /* يمنع التكبير العرضي */
         }
 
         .app-container {
             width: 100%;
-            max-width: 620px;
+            max-width: 450px;
+            height: 100%;
+            max-height: 100%;
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 30px;
-            padding: 30px 25px 25px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            padding: 15px 15px 10px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
         .app-title {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            margin-bottom: 25px;
             color: #f1f5f9;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
-            letter-spacing: 1px;
+            gap: 8px;
+            margin: 0;
         }
         .app-title i {
             color: #fbbf24;
-            font-size: 2rem;
-            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.5));
         }
 
         .input-group {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            flex-shrink: 0;
         }
-
         #choiceInput {
-            flex: 2 1 250px;
-            padding: 14px 18px;
+            flex: 1 1 auto;
+            padding: 10px 14px;
             border-radius: 50px;
             border: 1px solid #6366f1;
             background: #111827;
             color: #f8fafc;
-            font-size: 1rem;
+            font-size: 0.9rem;
             outline: none;
             transition: all 0.3s;
             box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
         }
         #choiceInput:focus {
             border-color: #a5b4fc;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4), inset 0 2px 5px rgba(0,0,0,0.5);
-        }
-        #choiceInput::placeholder {
-            color: #6b7280;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 10px 16px;
             border: none;
             border-radius: 50px;
             font-weight: 700;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             transition: all 0.25s ease;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             color: white;
             background: #4f46e5;
             box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
-            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
         .btn:hover {
             background: #6366f1;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(79, 70, 229, 0.5);
+            transform: translateY(-1px);
         }
         .btn:active {
-            transform: translateY(0px);
+            transform: translateY(0);
         }
         .btn:disabled {
             opacity: 0.5;
@@ -129,121 +125,111 @@
 
         .choices-scroll {
             list-style: none;
-            margin: 15px 0;
-            max-height: 180px;
+            width: 100%;
+            max-height: 90px;  /* قائمة صغيرة قابلة للتمرير داخلياً */
             overflow-y: auto;
             padding: 0;
             background: #0b1120;
-            border-radius: 20px;
+            border-radius: 16px;
             border: 1px solid #2d3748;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
-            color: #cbd5e1;
+            flex-shrink: 0;
         }
-
         .choice-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
+            padding: 6px 14px;
             border-bottom: 1px solid #1e293b;
-            transition: background 0.2s;
         }
         .choice-item:last-child {
             border-bottom: none;
         }
-        .choice-item:hover {
-            background: #1a2332;
-        }
         .choice-text {
             flex: 1;
             text-align: right;
-            margin-left: 15px;
+            margin-left: 10px;
             word-break: break-word;
+            font-size: 0.9rem;
         }
         .icon-btn {
             background: none;
             border: none;
             color: #f87171;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: color 0.2s;
-            padding: 5px;
+            font-size: 1rem;
+            padding: 4px;
         }
         .icon-btn:hover {
             color: #fca5a5;
         }
 
         .wheel-wrapper {
-            position: relative;
-            margin: 25px auto 15px;
-            width: 340px;
-            height: 340px;
+            width: 240px;
+            height: 240px;
+            flex-shrink: 0;
+            margin: 5px 0;
         }
         canvas {
             width: 100%;
             height: 100%;
-            display: block;
             border-radius: 50%;
-            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7));
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
         }
 
         #spinBtn {
-            width: 80%;
-            max-width: 320px;
-            margin: 10px auto;
-            font-size: 1.25rem;
-            padding: 14px;
+            width: 85%;
+            font-size: 1.1rem;
+            padding: 12px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: #0f172a;
-            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.4);
+            box-shadow: 0 5px 12px rgba(245, 158, 11, 0.4);
             border: none;
+            flex-shrink: 0;
         }
         #spinBtn:hover:not(:disabled) {
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
         }
 
         .result-box {
-            margin-top: 18px;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
-            min-height: 40px;
             color: #facc15;
             background: rgba(0,0,0,0.3);
-            border-radius: 50px;
-            padding: 10px 20px;
-            display: inline-block;
-            min-width: 200px;
-            letter-spacing: 1px;
+            border-radius: 40px;
+            padding: 6px 20px;
+            margin-top: 0;
+            flex-shrink: 0;
+            min-width: 180px;
+            text-align: center;
         }
 
-        /* شريط التمرير المخصص */
         .choices-scroll::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
         .choices-scroll::-webkit-scrollbar-track {
             background: #0f172a;
-            border-radius: 10px;
+            border-radius: 8px;
         }
         .choices-scroll::-webkit-scrollbar-thumb {
             background: #4b5563;
-            border-radius: 10px;
+            border-radius: 8px;
         }
     </style>
 </head>
 <body>
     <div class="app-container">
         <h1 class="app-title">
-            <i class="fas fa-circle-nodes"></i> عجلة الاختيار العشوائي
+            <i class="fas fa-circle-nodes"></i> عجلة الحظ
         </h1>
 
         <div class="input-group">
-            <input type="text" id="choiceInput" placeholder="أضف اختياراً ..." maxlength="50">
+            <input type="text" id="choiceInput" placeholder="أضف اختياراً..." maxlength="40">
             <button class="btn" id="addBtn"><i class="fas fa-plus"></i> إضافة</button>
-            <button class="btn btn-outline" id="clearBtn"><i class="fas fa-trash-can"></i> مسح الكل</button>
+            <button class="btn btn-outline" id="clearBtn"><i class="fas fa-trash-can"></i> مسح</button>
         </div>
 
         <ul id="choicesList" class="choices-scroll">
-            <li style="padding:20px; color:#64748b; text-align:center;">لا توجد اختيارات بعد</li>
+            <li style="padding:15px; color:#64748b; text-align:center;">لا توجد اختيارات</li>
         </ul>
 
         <div class="wheel-wrapper">
@@ -267,12 +253,33 @@
             const spinBtn = document.getElementById('spinBtn');
             const resultDiv = document.getElementById('result');
 
+            // --- التخزين المحلي ---
+            const STORAGE_KEY = 'randomWheelChoices_v2';
             let items = [];
+
+            function loadFromStorage() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        items = JSON.parse(stored);
+                        if (!Array.isArray(items)) items = [];
+                    } catch (e) {
+                        items = [];
+                    }
+                } else {
+                    items = [];
+                }
+            }
+
+            function saveToStorage() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+            }
+
+            // --- الرسم و الحالة ---
             let currentRotation = 0;
             let isSpinning = false;
             let animationFrame = null;
 
-            // لوحة ألوان احترافية متدرجة
             const gradientPairs = [
                 ['#FF6B6B', '#C92A2A'], ['#4ECDC4', '#0D7377'], ['#FFD93D', '#B7970B'],
                 ['#6C5CE7', '#3D2C8D'], ['#A8E6CF', '#2B7A4B'], ['#FF8C42', '#C45A1A'],
@@ -285,29 +292,29 @@
                 const h = canvas.height;
                 const cx = w / 2;
                 const cy = h / 2;
-                const radius = 175;
+                const radius = 105; // تصغير ليناسب العرض 240px
+
                 ctx.clearRect(0, 0, w, h);
 
-                // حلقة خارجية لامعة (خلفية)
+                // حلقة خارجية
                 ctx.beginPath();
-                ctx.arc(cx, cy, radius + 6, 0, 2 * Math.PI);
+                ctx.arc(cx, cy, radius + 4, 0, 2 * Math.PI);
                 ctx.strokeStyle = '#4b5563';
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 3;
                 ctx.stroke();
 
                 if (items.length === 0) {
-                    // عجلة فارغة أنيقة
                     ctx.beginPath();
                     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
                     ctx.fillStyle = '#1e293b';
                     ctx.fill();
                     ctx.strokeStyle = '#475569';
-                    ctx.lineWidth = 3;
+                    ctx.lineWidth = 2;
                     ctx.stroke();
-                    ctx.font = '18px "Segoe UI"';
+                    ctx.font = '16px "Segoe UI"';
                     ctx.fillStyle = '#94a3b8';
                     ctx.textAlign = 'center';
-                    ctx.fillText('أضف خيارات للبدء', cx, cy);
+                    ctx.fillText('لا توجد خيارات', cx, cy);
                     drawPointer(cx, cy);
                     return;
                 }
@@ -325,10 +332,9 @@
                     const midAngle = angleFrom + step / 2;
 
                     const [color1, color2] = gradientPairs[i % gradientPairs.length];
-                    // رسم القطاع بتدرج خطي يعطي إحساسًا ثلاثي الأبعاد
                     const grad = ctx.createLinearGradient(
-                        Math.cos(midAngle) * radius * 0.4,
-                        Math.sin(midAngle) * radius * 0.4,
+                        Math.cos(midAngle) * radius * 0.3,
+                        Math.sin(midAngle) * radius * 0.3,
                         Math.cos(midAngle) * radius,
                         Math.sin(midAngle) * radius
                     );
@@ -341,72 +347,61 @@
                     ctx.closePath();
                     ctx.fillStyle = grad;
                     ctx.fill();
-                    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-                    ctx.lineWidth = 1.5;
+                    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+                    ctx.lineWidth = 1.2;
                     ctx.stroke();
 
-                    // النص
                     ctx.save();
                     ctx.rotate(midAngle);
                     ctx.textAlign = 'center';
-                    ctx.font = 'bold 14px "Segoe UI"';
+                    ctx.font = 'bold 11px "Segoe UI"';
                     ctx.fillStyle = '#ffffff';
                     ctx.shadowColor = '#000000';
-                    ctx.shadowBlur = 4;
+                    ctx.shadowBlur = 3;
                     let displayText = items[i];
-                    if (displayText.length > 12) displayText = displayText.substring(0, 10) + '..';
-                    ctx.fillText(displayText, radius * 0.62, 5);
+                    if (displayText.length > 10) displayText = displayText.substring(0, 9) + '..';
+                    ctx.fillText(displayText, radius * 0.6, 4);
                     ctx.restore();
                 }
 
-                // حلقة داخلية معدنية
+                // مركز معدني
                 ctx.beginPath();
-                ctx.arc(0, 0, 25, 0, 2 * Math.PI);
-                const metalGrad = ctx.createRadialGradient(0, 0, 5, 0, 0, 25);
+                ctx.arc(0, 0, 18, 0, 2 * Math.PI);
+                const metalGrad = ctx.createRadialGradient(0, 0, 3, 0, 0, 18);
                 metalGrad.addColorStop(0, '#d1d5db');
                 metalGrad.addColorStop(0.5, '#9ca3af');
                 metalGrad.addColorStop(1, '#4b5563');
                 ctx.fillStyle = metalGrad;
                 ctx.fill();
                 ctx.strokeStyle = '#fbbf24';
-                ctx.lineWidth = 3;
+                ctx.lineWidth = 2;
                 ctx.stroke();
-
                 ctx.restore();
 
                 drawPointer(cx, cy);
             }
 
             function drawPointer(cx, cy) {
-                // سهم مثلثي أنيق في الأعلى
-                const pointerTop = cy - 185;
+                const pointerTop = cy - 116; // radius + 1 تقريباً
                 ctx.beginPath();
                 ctx.moveTo(cx, pointerTop);
-                ctx.lineTo(cx - 14, pointerTop - 28);
-                ctx.lineTo(cx + 14, pointerTop - 28);
+                ctx.lineTo(cx - 10, pointerTop - 20);
+                ctx.lineTo(cx + 10, pointerTop - 20);
                 ctx.closePath();
-                const pointerGrad = ctx.createLinearGradient(cx, pointerTop-28, cx, pointerTop);
+                const pointerGrad = ctx.createLinearGradient(cx, pointerTop-20, cx, pointerTop);
                 pointerGrad.addColorStop(0, '#ef4444');
                 pointerGrad.addColorStop(1, '#b91c1c');
                 ctx.fillStyle = pointerGrad;
                 ctx.fill();
                 ctx.strokeStyle = '#450a0a';
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 1.8;
                 ctx.stroke();
-                ctx.shadowColor = 'rgba(0,0,0,0.7)';
-                ctx.shadowBlur = 6;
-                ctx.shadowOffsetY = 2;
-                ctx.fill();
-                ctx.stroke();
-                ctx.shadowColor = 'transparent';
-                ctx.shadowBlur = 0;
-                ctx.shadowOffsetY = 0;
             }
 
             function renderList() {
                 listEl.innerHTML = '';
                 if (items.length === 0) {
-                    listEl.innerHTML = '<li style="padding:20px; color:#64748b; text-align:center;">لا توجد اختيارات بعد</li>';
+                    listEl.innerHTML = '<li style="padding:15px; color:#64748b; text-align:center;">لا توجد اختيارات</li>';
                     spinBtn.disabled = true;
                 } else {
                     spinBtn.disabled = false;
@@ -424,14 +419,47 @@
                         btn.addEventListener('click', function(e) {
                             if (isSpinning) return;
                             const idx = parseInt(this.getAttribute('data-index'));
-                            items.splice(idx, 1);
-                            resetWheel();
-                            renderList();
-                            drawWheel();
-                            resultDiv.textContent = '';
+                            removeItem(idx);
                         });
                     });
                 }
+            }
+
+            function removeItem(index) {
+                if (isSpinning) return;
+                items.splice(index, 1);
+                resetWheel();
+                saveToStorage(); // حفظ بعد الحذف
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
+            }
+
+            function clearAll() {
+                if (isSpinning) return;
+                items = [];
+                resetWheel();
+                saveToStorage(); // حفظ بعد المسح
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
+            }
+
+            function addChoice(text) {
+                const trimmed = text.trim();
+                if (!trimmed) return;
+                if (trimmed.length > 40) {
+                    alert('الرجاء اختيار نص أقصر (40 حرفاً كحد أقصى)');
+                    return;
+                }
+                items.push(trimmed);
+                input.value = '';
+                resetWheel();
+                saveToStorage(); // حفظ بعد الإضافة
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
+                input.focus();
             }
 
             function resetWheel() {
@@ -448,31 +476,6 @@
                 }
             }
 
-            function addChoice(text) {
-                const trimmed = text.trim();
-                if (!trimmed) return;
-                if (trimmed.length > 50) {
-                    alert('الرجاء اختيار نص أقل من 50 حرفاً');
-                    return;
-                }
-                items.push(trimmed);
-                input.value = '';
-                resetWheel();
-                renderList();
-                drawWheel();
-                resultDiv.textContent = '';
-                input.focus();
-            }
-
-            function clearAll() {
-                if (isSpinning) return;
-                items = [];
-                resetWheel();
-                renderList();
-                drawWheel();
-                resultDiv.textContent = '';
-            }
-
             function spin() {
                 if (isSpinning || items.length === 0) return;
                 isSpinning = true;
@@ -483,7 +486,7 @@
                 const randomOffset = Math.random() * 2 * Math.PI;
                 const targetRotation = currentRotation + extraSpins * 2 * Math.PI + randomOffset;
                 const startRotation = currentRotation;
-                const duration = 4000;
+                const duration = 3500;
                 const startTime = performance.now();
 
                 function animate(now) {
@@ -518,39 +521,44 @@
                 const winner = items[index];
                 resultDiv.textContent = `🎉 ${winner}`;
 
-                // إطلاق مؤثرات احتفالية
+                // احتفالية مصغرة
                 confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6, x: 0.5 },
-                    colors: ['#fbbf24', '#f59e0b', '#4f46e5', '#ec4899', '#10b981']
+                    particleCount: 80,
+                    spread: 60,
+                    origin: { y: 0.65, x: 0.5 },
+                    colors: ['#fbbf24', '#f59e0b', '#4f46e5', '#ec4899']
                 });
                 setTimeout(() => {
                     confetti({
-                        particleCount: 50,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0, y: 0.6 }
+                        particleCount: 40,
+                        angle: 55,
+                        spread: 45,
+                        origin: { x: 0, y: 0.65 }
                     });
                     confetti({
-                        particleCount: 50,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1, y: 0.6 }
+                        particleCount: 40,
+                        angle: 125,
+                        spread: 45,
+                        origin: { x: 1, y: 0.65 }
                     });
-                }, 200);
+                }, 150);
             }
 
-            // الأحداث
-            addBtn.addEventListener('click', () => addChoice(input.value));
-            input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addChoice(input.value);
-            });
-            clearBtn.addEventListener('click', clearAll);
-            spinBtn.addEventListener('click', spin);
+            // --- التهيئة ---
+            function init() {
+                loadFromStorage();
+                renderList();
+                drawWheel();
+                // روابط الأحداث
+                addBtn.addEventListener('click', () => addChoice(input.value));
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') addChoice(input.value);
+                });
+                clearBtn.addEventListener('click', clearAll);
+                spinBtn.addEventListener('click', spin);
+            }
 
-            drawWheel();
-            renderList();
+            init();
         })();
     </script>
 </body>
