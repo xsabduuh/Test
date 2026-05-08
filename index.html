@@ -3,831 +3,503 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة تصفية العقل VIP</title>
-    <!-- Font Awesome 6 للأيقونات الاحترافية -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>عجلة الاختيار العشوائي</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap');
-
-        :root {
-            --bg-deep: #03050f;
-            --glass-bg: rgba(18, 25, 48, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --neon-blue: #00c2ff;
-            --neon-purple: #b347ea;
-            --neon-gold: #ffb800;
-            --text-primary: #f0f5ff;
-            --text-secondary: #a0b5d8;
-            --danger: #ff4d6a;
-            --success: #4de8a0;
-            --card-blur: blur(24px);
-            --transition: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-        }
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
-            background: var(--bg-deep);
-            font-family: 'Tajawal', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
             min-height: 100vh;
-            padding: 2rem;
-            color: var(--text-primary);
-            transition: background 0.6s ease;
-            position: relative;
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e2e8f0;
         }
 
-        /* شبكة خلفية متحركة */
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background-image: radial-gradient(rgba(0, 194, 255, 0.07) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        body.state-alert {
-            background: radial-gradient(circle at 30% 30%, #1a0710, #050111 80%);
-        }
-        body.state-alert::before {
-            background-image: radial-gradient(rgba(255, 77, 106, 0.09) 1px, transparent 1px);
-        }
-
-        .main-container {
-            position: relative;
-            z-index: 2;
+        .container {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 30px 25px;
             width: 100%;
-            max-width: 1050px;
-            background: var(--glass-bg);
-            backdrop-filter: var(--card-blur);
-            -webkit-backdrop-filter: var(--card-blur);
-            border: 1px solid var(--glass-border);
-            border-radius: 3.5rem;
-            padding: 3rem 2.8rem;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            max-width: 550px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.3);
         }
 
-        /* ========== HEADER ========== */
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            background: rgba(255, 184, 0, 0.08);
-            padding: 0.6rem 2rem;
-            border-radius: 4rem;
-            border: 1px solid rgba(255, 184, 0, 0.35);
-            backdrop-filter: blur(15px);
-        }
-
-        .logo-area i {
-            font-size: 2.4rem;
-            color: var(--neon-gold);
-            filter: drop-shadow(0 0 14px var(--neon-gold));
-        }
-
-        .logo-area span {
-            font-weight: 900;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-            color: #ffe9a7;
-        }
-
-        .stats-row {
-            display: flex;
-            gap: 2.5rem;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 0.7rem 2.5rem;
-            border-radius: 4rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 1.2rem;
-        }
-
-        .stat-item i {
+        h1 {
             font-size: 2rem;
-            filter: drop-shadow(0 0 8px currentColor);
+            margin-bottom: 25px;
+            color: #a5b4fc;
+            letter-spacing: 1px;
         }
 
-        .stat-number {
-            font-weight: 900;
-            font-size: 1.6rem;
-            color: var(--neon-gold);
-        }
-
-        /* ========== العنوان ========== */
-        .title-block {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .main-title {
-            font-size: 5.2rem;
-            font-weight: 900;
-            background: linear-gradient(180deg, #e0f0ff 0%, #60b0ff 60%, #4090e0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            filter: drop-shadow(0 0 40px rgba(0, 162, 255, 0.5));
-            letter-spacing: 2px;
-            line-height: 1.2;
-            margin-bottom: 0.4rem;
-        }
-
-        .subtitle {
-            font-size: 1.4rem;
-            color: var(--text-secondary);
+        .input-section {
             display: flex;
-            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
             justify-content: center;
-            gap: 0.7rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .subtitle i {
-            font-size: 2.2rem;
-            color: var(--neon-blue);
-            filter: drop-shadow(0 0 10px var(--neon-blue));
-        }
-
-        /* ========== قسم الصيام ========== */
-        .fasting-panel {
-            background: rgba(12, 20, 40, 0.5);
-            backdrop-filter: blur(18px);
-            border: 1px solid rgba(0, 194, 255, 0.25);
-            border-radius: 2.5rem;
-            padding: 1.4rem 2.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .fasting-timer-area {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .fasting-timer-area i {
-            font-size: 3rem;
-            color: var(--neon-blue);
-            filter: drop-shadow(0 0 18px var(--neon-blue));
-        }
-
-        .timer-display {
-            font-size: 2.8rem;
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 0.3rem 2.2rem;
-            border-radius: 2.5rem;
-            color: #a0e0ff;
-            letter-spacing: 4px;
-            border: 1px solid rgba(0, 194, 255, 0.3);
-        }
-
-        .btn {
-            padding: 1rem 2.2rem;
-            border-radius: 3rem;
-            font-weight: 700;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            color: white;
-            background: rgba(20, 35, 60, 0.7);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        .btn-fasting {
-            background: rgba(0, 100, 200, 0.3);
-            border: 1px solid rgba(0, 194, 255, 0.5);
-        }
-
-        .btn-fasting.active {
-            background: rgba(0, 180, 120, 0.3);
-            border-color: rgba(77, 232, 160, 0.6);
-            box-shadow: 0 0 30px rgba(77, 232, 160, 0.3);
-        }
-
-        .btn i {
-            font-size: 1.6rem;
-        }
-
-        /* ========== شبكة البطاقات ========== */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.2rem;
-        }
-
-        @media (max-width: 800px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .main-title {
-                font-size: 3.5rem;
-            }
-        }
-
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: var(--card-blur);
-            -webkit-backdrop-filter: var(--card-blur);
-            border-radius: 2.5rem;
-            padding: 2.2rem;
-            border: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.8rem;
-            font-size: 1.7rem;
-            font-weight: 700;
-        }
-
-        .card-header i {
-            font-size: 2.6rem;
-        }
-
-        .card-header.blocked i {
-            color: var(--danger);
-            filter: drop-shadow(0 0 14px var(--danger));
-        }
-
-        .card-header.check i {
-            color: var(--success);
-            filter: drop-shadow(0 0 14px var(--success));
-        }
-
-        /* التصنيفات */
-        .cat-filters {
-            display: flex;
-            gap: 0.6rem;
-            margin-bottom: 1.4rem;
-            flex-wrap: wrap;
-        }
-
-        .cat-btn {
-            background: rgba(20, 30, 55, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-secondary);
-            padding: 0.5rem 1.3rem;
-            border-radius: 2.5rem;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: var(--transition);
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        .cat-btn.active {
-            background: rgba(179, 71, 234, 0.2);
-            border-color: var(--neon-purple);
-            color: white;
-            box-shadow: 0 0 18px rgba(179, 71, 234, 0.3);
-        }
-
-        /* وسوم المحظورات */
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-bottom: 1.8rem;
-            max-height: 210px;
-            overflow-y: auto;
-        }
-
-        .tag {
-            background: rgba(30, 18, 30, 0.6);
-            border: 1px solid rgba(255, 77, 106, 0.5);
-            border-radius: 3rem;
-            padding: 0.6rem 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
+        #choiceInput {
+            flex: 1 1 200px;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #4f46e5;
+            background: #1e293b;
+            color: #f1f5f9;
             font-size: 1rem;
-            color: #ffc4c4;
-            backdrop-filter: blur(12px);
+            outline: none;
+            transition: border 0.3s;
         }
 
-        .tag i {
-            font-size: 1.2rem;
-            color: var(--danger);
+        #choiceInput:focus {
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
         }
 
-        .tag .delete-tag {
-            background: none;
+        button {
+            padding: 10px 18px;
             border: none;
-            color: #ff9999;
+            border-radius: 12px;
+            font-weight: bold;
             cursor: pointer;
-            font-size: 1.3rem;
-            transition: var(--transition);
-        }
-
-        .tag .delete-tag:hover {
-            color: white;
-            transform: scale(1.4);
-        }
-
-        /* إضافة عنصر */
-        .add-row {
-            display: flex;
-            gap: 0.6rem;
-        }
-
-        .add-row input {
-            flex: 1;
-            background: rgba(15, 22, 40, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.8rem 1.4rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        .btn-danger {
-            background: rgba(200, 40, 60, 0.3);
-            border-color: rgba(255, 77, 106, 0.5);
-        }
-
-        /* صندوق الفحص */
-        .search-row {
-            display: flex;
-            gap: 0.6rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .search-row input {
-            flex: 1;
-            background: rgba(15, 22, 40, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 0.9rem 1.4rem;
-            border-radius: 2.5rem;
-            color: white;
-            outline: none;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        .btn-primary {
-            background: rgba(0, 80, 200, 0.4);
-            border-color: rgba(0, 162, 255, 0.5);
-        }
-
-        .btn-primary:hover {
-            background: rgba(0, 120, 240, 0.5);
-        }
-
-        .live-warning {
             font-size: 0.95rem;
-            color: #ffaa88;
-            min-height: 1.6rem;
-            margin-bottom: 0.4rem;
-        }
-
-        .result-box {
-            padding: 1.2rem;
-            border-radius: 2.2rem;
-            font-weight: 700;
-            text-align: center;
-            font-size: 1.2rem;
-            background: rgba(0, 0, 0, 0.4);
-            display: flex;
+            transition: all 0.2s ease;
+            background: #4f46e5;
+            color: white;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.6rem;
-            border: 1px solid transparent;
-            backdrop-filter: blur(15px);
+            gap: 6px;
         }
 
-        .result-box.blocked {
-            border-color: var(--danger);
-            color: #ffb3b3;
-            box-shadow: 0 0 25px rgba(255, 77, 106, 0.2);
+        button:hover {
+            background: #6366f1;
+            transform: translateY(-2px);
         }
 
-        .result-box.allowed {
-            border-color: var(--success);
-            color: #b3ffcc;
-            box-shadow: 0 0 25px rgba(77, 232, 160, 0.2);
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            background: #4b5563;
+        }
+
+        #clearBtn {
+            background: #b91c1c;
+        }
+
+        #clearBtn:hover {
+            background: #dc2626;
+        }
+
+        .choices-list {
+            list-style: none;
+            margin: 15px 0;
+            max-height: 180px;
+            overflow-y: auto;
+            padding: 0;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .choice-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #1e293b;
+            color: #cbd5e1;
+            transition: background 0.2s;
+        }
+
+        .choice-item:last-child {
+            border-bottom: none;
+        }
+
+        .choice-item:hover {
+            background: #1e293b;
+        }
+
+        .choice-text {
+            flex: 1;
+            text-align: right;
+            margin-left: 10px;
+            word-break: break-word;
+        }
+
+        .delete-btn {
+            background: transparent;
+            color: #f87171;
+            border: 1px solid #f87171;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #f87171;
+            color: white;
+        }
+
+        .wheel-container {
+            position: relative;
+            margin: 25px auto 15px;
+            width: 320px;
+            height: 320px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            border-radius: 50%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            background: transparent;
+        }
+
+        #spinBtn {
+            font-size: 1.2rem;
+            padding: 12px 30px;
+            background: #f59e0b;
+            color: #0f172a;
+            margin: 10px 0;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        #spinBtn:hover:not(:disabled) {
+            background: #fbbf24;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            min-height: 35px;
+            color: #facc15;
+            padding: 8px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .empty-message {
+            padding: 20px;
+            color: #64748b;
+            text-align: center;
         }
     </style>
 </head>
-<body class="state-calm">
+<body>
+    <div class="container">
+        <h1>🎡 عجلة الحظ</h1>
 
-    <div class="main-container">
-        <!-- ==================== HEADER ==================== -->
-        <div class="header">
-            <div class="logo-area">
-                <i class="fas fa-crown"></i>
-                <span>منصة العقل VIP</span>
-            </div>
-            <div class="stats-row">
-                <div class="stat-item">
-                    <i class="fas fa-ban" style="color: var(--danger);"></i>
-                    <span>محظور</span>
-                    <span class="stat-number" id="blockedCount">0</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-check-circle" style="color: var(--success);"></i>
-                    <span>فحص</span>
-                    <span class="stat-number" id="checksCount">0</span>
-                </div>
-            </div>
+        <div class="input-section">
+            <input type="text" id="choiceInput" placeholder="اكتب اختياراً هنا..." maxlength="50">
+            <button id="addBtn">➕ إضافة</button>
+            <button id="clearBtn">🗑️ مسح الكل</button>
         </div>
 
-        <!-- ==================== العنوان الرئيسي ==================== -->
-        <div class="title-block">
-            <h1 class="main-title">تصفية العقل</h1>
-            <div class="subtitle">
-                <i class="fas fa-brain"></i>
-                عقلك منصة خاصة .. لا يدخلها إلا ما ينفع
-            </div>
+        <ul id="choicesList" class="choices-list">
+            <li class="empty-message">لا توجد اختيارات بعد</li>
+        </ul>
+
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="400" height="400"></canvas>
         </div>
 
-        <!-- ==================== لوحة الصيام ==================== -->
-        <div class="fasting-panel">
-            <div class="fasting-timer-area">
-                <i class="fas fa-hourglass-half"></i>
-                <span class="timer-display" id="fastingTimer">00:00:00</span>
-            </div>
-            <button class="btn btn-fasting" id="toggleFastingBtn">
-                <i class="fas fa-play"></i> بدء الصيام
-            </button>
-        </div>
-
-        <!-- ==================== شبكة البطاقات ==================== -->
-        <div class="cards-grid">
-            <!-- بطاقة المحظورات -->
-            <div class="card">
-                <div class="card-header blocked">
-                    <i class="fas fa-shield-haltered"></i> قائمة الحظر
-                </div>
-                <div class="cat-filters" id="categoryFilters">
-                    <button class="cat-btn active" data-cat="all">الكل</button>
-                    <button class="cat-btn" data-cat="مشاعر">😡 مشاعر</button>
-                    <button class="cat-btn" data-cat="عادات">📱 عادات</button>
-                    <button class="cat-btn" data-cat="أفكار">💭 أفكار</button>
-                </div>
-                <div class="tags-container" id="harmfulTagsContainer"></div>
-                <div class="add-row">
-                    <input type="text" id="newHarmfulInput" placeholder="أضف محظوراً جديداً ...">
-                    <button class="btn btn-danger" id="addHarmfulBtn"><i class="fas fa-plus"></i> إضافة</button>
-                </div>
-            </div>
-
-            <!-- بطاقة الفحص -->
-            <div class="card">
-                <div class="card-header check">
-                    <i class="fas fa-magnifying-glass"></i> فحص المؤثرات
-                </div>
-                <div class="search-row">
-                    <input type="text" id="checkInput" placeholder="اكتب فكرة أو مؤثر للفحص ...">
-                    <button class="btn btn-primary" id="checkBtn"><i class="fas fa-check"></i> تحقق</button>
-                </div>
-                <div class="live-warning" id="liveWarning"></div>
-                <div id="resultDisplay" class="result-box"></div>
-            </div>
-        </div>
+        <button id="spinBtn" disabled>🎲 لف العجلة</button>
+        <div id="result"></div>
     </div>
 
     <script>
         (function() {
-            // ==================== البيانات الافتراضية ====================
-            const defaultItems = [
-                { text: "الغضب", cat: "مشاعر" },
-                { text: "الحسد", cat: "مشاعر" },
-                { text: "التفكير السلبي", cat: "أفكار" },
-                { text: "وسائل التواصل المفرطة", cat: "عادات" },
-                { text: "الأخبار السيئة", cat: "عادات" },
-                { text: "مقارنة النفس", cat: "أفكار" },
-                { text: "الخوف من الفشل", cat: "مشاعر" },
-                { text: "القلق الزائد", cat: "مشاعر" },
-                { text: "التشاؤم", cat: "أفكار" },
-                { text: "النميمة", cat: "عادات" },
-                { text: "الإدمان الرقمي", cat: "عادات" },
-                { text: "العلاقات السامة", cat: "عادات" }
+            // العناصر
+            const input = document.getElementById('choiceInput');
+            const addBtn = document.getElementById('addBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const listEl = document.getElementById('choicesList');
+            const canvas = document.getElementById('wheelCanvas');
+            const ctx = canvas.getContext('2d');
+            const spinBtn = document.getElementById('spinBtn');
+            const resultDiv = document.getElementById('result');
+
+            // الحالة
+            let items = [];
+            let currentRotation = 0; // راديان
+            let isSpinning = false;
+            let animationFrame = null;
+
+            const colors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF',
+                '#FF9F40', '#C9CBCF', '#7BC8A4', '#E67E22', '#2ECC71',
+                '#E74C3C', '#9B59B6', '#3498DB', '#1ABC9C', '#F1C40F',
+                '#E84393', '#00B894', '#6C5CE7', '#FD79A8', '#00CEC9'
             ];
 
-            // ==================== حالة التطبيق ====================
-            let harmfulList = [];
-            let fastingActive = false;
-            let fastingSeconds = 0;
-            let fastingInterval = null;
-            let fastingStartTime = null;
-            let totalChecks = 0;
-            let currentCategory = 'all';
-
-            const STORAGE_KEY = 'mindVipHarmfulListV2';
-
-            // ==================== عناصر DOM ====================
-            const harmfulContainer = document.getElementById('harmfulTagsContainer');
-            const blockedCountEl = document.getElementById('blockedCount');
-            const checksCountEl = document.getElementById('checksCount');
-            const newInput = document.getElementById('newHarmfulInput');
-            const addBtn = document.getElementById('addHarmfulBtn');
-            const checkInput = document.getElementById('checkInput');
-            const checkBtn = document.getElementById('checkBtn');
-            const resultDisplay = document.getElementById('resultDisplay');
-            const liveWarning = document.getElementById('liveWarning');
-            const timerEl = document.getElementById('fastingTimer');
-            const fastingBtn = document.getElementById('toggleFastingBtn');
-            const catButtons = document.querySelectorAll('.cat-btn');
-            const body = document.body;
-
-            // ==================== دوال البيانات ====================
-            function loadData() {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    try {
-                        harmfulList = JSON.parse(stored);
-                        if (!Array.isArray(harmfulList)) harmfulList = [...defaultItems];
-                    } catch (e) {
-                        harmfulList = [...defaultItems];
-                    }
-                } else {
-                    harmfulList = [...defaultItems];
-                }
-
-                // تحميل حالة الصيام
-                const savedFasting = localStorage.getItem('mindVipFasting');
-                if (savedFasting === 'active') {
-                    const start = localStorage.getItem('mindVipFastingStart');
-                    if (start) {
-                        fastingStartTime = parseInt(start, 10);
-                        fastingActive = true;
-                        fastingSeconds = Math.floor((Date.now() - fastingStartTime) / 1000);
-                        startTimerInterval();
-                    }
-                }
-
-                totalChecks = parseInt(localStorage.getItem('mindVipTotalChecks') || '0', 10);
-                updateStats();
-            }
-
-            function saveData() {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(harmfulList));
-                updateStats();
-            }
-
-            function updateStats() {
-                if (blockedCountEl) blockedCountEl.textContent = harmfulList.length;
-                if (checksCountEl) checksCountEl.textContent = totalChecks;
-            }
-
-            function getFilteredItems() {
-                if (currentCategory === 'all') return harmfulList;
-                return harmfulList.filter(item => item.cat === currentCategory);
-            }
-
-            // ==================== عرض المحظورات ====================
-            function renderTags() {
-                if (!harmfulContainer) return;
-                const items = getFilteredItems();
-                harmfulContainer.innerHTML = '';
+            // رسم العجلة
+            function drawWheel() {
+                const w = canvas.width;
+                const h = canvas.height;
+                const cx = w / 2;
+                const cy = h / 2;
+                const radius = 170;
+                ctx.clearRect(0, 0, w, h);
 
                 if (items.length === 0) {
-                    harmfulContainer.innerHTML =
-                        '<div style="color:#8899bb; padding:1rem; text-align:center; width:100%;">لا توجد محظورات في هذا التصنيف</div>';
+                    // رسم دائرة فارغة
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+                    ctx.strokeStyle = '#334155';
+                    ctx.lineWidth = 3;
+                    ctx.stroke();
+                    ctx.font = '16px "Segoe UI"';
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('لا توجد خيارات', cx, cy);
+                    drawPointer(cx, cy);
                     return;
                 }
 
-                items.forEach((item) => {
-                    const realIndex = harmfulList.indexOf(item);
-                    const tag = document.createElement('span');
-                    tag.className = 'tag';
-                    tag.innerHTML = `
-                        <i class="fas fa-circle-xmark"></i> 
-                        ${escapeHTML(item.text)} 
-                        <button class="delete-tag" data-index="${realIndex}" title="حذف">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    `;
-                    harmfulContainer.appendChild(tag);
-                });
+                const step = (2 * Math.PI) / items.length;
+                const startAngle = -Math.PI / 2; // الأعلى
 
-                // ربط أزرار الحذف
-                document.querySelectorAll('.delete-tag').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const idx = parseInt(this.getAttribute('data-index'), 10);
-                        if (!isNaN(idx) && idx >= 0 && idx < harmfulList.length) {
-                            harmfulList.splice(idx, 1);
-                            saveData();
-                            renderTags();
-                            clearResult();
-                        }
+                // رسم القطاعات مع التدوير
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(currentRotation);
+
+                for (let i = 0; i < items.length; i++) {
+                    const angleFrom = startAngle + i * step;
+                    const angleTo = angleFrom + step;
+
+                    // اللون
+                    ctx.fillStyle = colors[i % colors.length];
+
+                    // رسم القوس
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.arc(0, 0, radius, angleFrom, angleTo);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // حدود بيضاء خفيفة
+                    ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // النص داخل القطاع
+                    ctx.save();
+                    const textAngle = angleFrom + step / 2;
+                    ctx.rotate(textAngle);
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#0f172a';
+                    ctx.font = 'bold 14px "Segoe UI"';
+                    // تقليم النص إذا كان طويلاً
+                    let text = items[i];
+                    if (text.length > 12) text = text.substring(0, 10) + '..';
+                    ctx.fillText(text, radius * 0.65, 5);
+                    ctx.restore();
+                }
+                ctx.restore();
+
+                // رسم دائرة مركزية للتزيين
+                ctx.beginPath();
+                ctx.arc(cx, cy, 25, 0, 2 * Math.PI);
+                ctx.fillStyle = '#0f172a';
+                ctx.fill();
+                ctx.strokeStyle = '#facc15';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+
+                drawPointer(cx, cy);
+            }
+
+            function drawPointer(cx, cy) {
+                // مؤشر علوي ثابت
+                const pointerX = cx;
+                const pointerY = cy - 175; // أعلى الدائرة
+                ctx.beginPath();
+                ctx.moveTo(pointerX, pointerY);
+                ctx.lineTo(pointerX - 15, pointerY - 25);
+                ctx.lineTo(pointerX + 15, pointerY - 25);
+                ctx.closePath();
+                ctx.fillStyle = '#ef4444';
+                ctx.fill();
+                ctx.strokeStyle = '#450a0a';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // تحديث قائمة العرض
+            function renderList() {
+                listEl.innerHTML = '';
+                if (items.length === 0) {
+                    listEl.innerHTML = '<li class="empty-message">لا توجد اختيارات بعد</li>';
+                    spinBtn.disabled = true;
+                } else {
+                    spinBtn.disabled = false;
+                    items.forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'choice-item';
+                        li.innerHTML = `
+                            <span class="choice-text">${item}</span>
+                            <button class="delete-btn" data-index="${index}">حذف</button>
+                        `;
+                        listEl.appendChild(li);
                     });
-                });
+
+                    // إضافة أحداث الحذف
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            const idx = parseInt(this.getAttribute('data-index'));
+                            removeItem(idx);
+                        });
+                    });
+                }
             }
 
-            function escapeHTML(str) {
-                return String(str)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;');
+            function removeItem(index) {
+                if (isSpinning) return;
+                items.splice(index, 1);
+                resetWheel();
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
             }
 
-            // ==================== إضافة عنصر ====================
-            function addHarmfulItem() {
-                const text = newInput.value.trim();
-                if (!text) return;
+            function clearAll() {
+                if (isSpinning) return;
+                items = [];
+                resetWheel();
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
+            }
 
-                if (harmfulList.some(item => item.text === text)) {
-                    alert('⚠️ هذا العنصر موجود بالفعل في قائمة المحظورات.');
+            function addChoice(text) {
+                const trimmed = text.trim();
+                if (trimmed === '') return;
+                if (trimmed.length > 50) {
+                    alert('الرجاء إدخال نص أقصر (أقل من 50 حرفاً)');
                     return;
                 }
-
-                let cat = 'عادات';
-                if (text.includes('غضب') || text.includes('خوف') || text.includes('قلق') || text.includes(
-                        'حسد')) {
-                    cat = 'مشاعر';
-                } else if (text.includes('تفكير') || text.includes('تشاؤم') || text.includes('سلبية')) {
-                    cat = 'أفكار';
-                }
-
-                harmfulList.push({ text, cat });
-                saveData();
-                renderTags();
-                newInput.value = '';
-                newInput.focus();
+                items.push(trimmed);
+                input.value = '';
+                resetWheel();
+                renderList();
+                drawWheel();
+                resultDiv.textContent = '';
+                input.focus();
             }
 
-            if (addBtn) addBtn.addEventListener('click', addHarmfulItem);
-            if (newInput) {
-                newInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        addHarmfulItem();
-                    }
-                });
+            function resetWheel() {
+                // إيقاف أي دوران سابق
+                stopAnimation();
+                currentRotation = 0;
+                isSpinning = false;
+                spinBtn.disabled = items.length === 0;
             }
 
-            // ==================== فحص النص ====================
-            function performCheck() {
-                const thought = checkInput.value.trim();
-                if (!thought) {
-                    resultDisplay.innerHTML = '⚠️ الرجاء إدخال نص لفحصه';
-                    resultDisplay.className = 'result-box';
-                    return;
-                }
-
-                totalChecks++;
-                localStorage.setItem('mindVipTotalChecks', totalChecks);
-                updateStats();
-
-                const found = harmfulList.some(item =>
-                    thought.includes(item.text) || item.text.includes(thought)
-                );
-
-                if (found) {
-                    resultDisplay.innerHTML = `🚫 "${escapeHTML(thought)}" ممنوع من دخول العقل`;
-                    resultDisplay.className = 'result-box blocked';
-                    body.className = 'state-alert';
-                    setTimeout(() => { body.className = 'state-calm'; }, 900);
-                } else {
-                    resultDisplay.innerHTML = `✅ "${escapeHTML(thought)}" مسموح .. مرحباً به`;
-                    resultDisplay.className = 'result-box allowed';
-                    body.className = 'state-calm';
+            function stopAnimation() {
+                if (animationFrame) {
+                    cancelAnimationFrame(animationFrame);
+                    animationFrame = null;
                 }
             }
 
-            function clearResult() {
-                if (resultDisplay) {
-                    resultDisplay.innerHTML = '';
-                    resultDisplay.className = 'result-box';
-                }
-            }
+            // تدوير العجلة
+            function spin() {
+                if (isSpinning || items.length === 0) return;
+                isSpinning = true;
+                spinBtn.disabled = true;
+                resultDiv.textContent = 'جاري الدوران...';
 
-            if (checkInput) {
-                checkInput.addEventListener('input', function() {
-                    const val = this.value.trim();
-                    if (val && harmfulList.some(item => val.includes(item.text))) {
-                        liveWarning.textContent = '⚠️ هذا النص يحتوي على عنصر محظور!';
+                // زاوية عشوائية بين 5 لفات كاملة و 8 لفات
+                const extraSpins = 5 + Math.floor(Math.random() * 4);
+                const randomOffset = Math.random() * 2 * Math.PI;
+                const targetRotation = currentRotation + extraSpins * 2 * Math.PI + randomOffset;
+
+                const startRotation = currentRotation;
+                const duration = 4000; // مللي ثانية
+                const startTime = performance.now();
+
+                function animate(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+
+                    // دالة تخفيف (easeOutCubic)
+                    const ease = 1 - Math.pow(1 - progress, 3);
+
+                    currentRotation = startRotation + (targetRotation - startRotation) * ease;
+                    drawWheel();
+
+                    if (progress < 1) {
+                        animationFrame = requestAnimationFrame(animate);
                     } else {
-                        liveWarning.textContent = '';
+                        // انتهى الدوران
+                        currentRotation = targetRotation;
+                        drawWheel();
+                        announceWinner();
+                        isSpinning = false;
+                        spinBtn.disabled = false;
+                        animationFrame = null;
                     }
-                });
+                }
 
-                checkInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        performCheck();
-                    }
-                });
+                animationFrame = requestAnimationFrame(animate);
             }
 
-            if (checkBtn) checkBtn.addEventListener('click', performCheck);
+            function announceWinner() {
+                // حساب القطاع الفائز (المؤشر في الأعلى)
+                const pointerAngle = -Math.PI / 2; // الأعلى
+                const step = (2 * Math.PI) / items.length;
+                const startAngle = -Math.PI / 2;
 
-            // ==================== تصفية التصنيفات ====================
-            catButtons.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    catButtons.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCategory = this.getAttribute('data-cat');
-                    renderTags();
-                });
+                // الزاوية المحلية للعجلة التي تقابل المؤشر
+                let rawAngle = (pointerAngle - currentRotation) % (2 * Math.PI);
+                if (rawAngle < 0) rawAngle += 2 * Math.PI;
+
+                // إزاحة startAngle
+                const adjustedAngle = (rawAngle - startAngle + 2 * Math.PI) % (2 * Math.PI);
+                const index = Math.floor(adjustedAngle / step) % items.length;
+
+                const winner = items[index];
+                resultDiv.textContent = `🎉 النتيجة: ${winner}`;
+            }
+
+            // الأحداث
+            addBtn.addEventListener('click', () => addChoice(input.value));
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addChoice(input.value);
             });
+            clearBtn.addEventListener('click', clearAll);
+            spinBtn.addEventListener('click', spin);
 
-            // ==================== مؤقت الصيام ====================
-            function formatTime(seconds) {
-                const hrs = Math.floor(seconds / 3600);
-                const mins = Math.floor((seconds % 3600) / 60);
-                const secs = seconds % 60;
-                return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-            }
+            // الرسم الأولي
+            drawWheel();
+            renderList();
 
-            function updateTimerDisplay() {
-                if (timerEl) timerEl.textContent = formatTime(fastingSeconds);
-            }
-
-            function startTimerInterval() {
-                if (fastingInterval) clearInterval(fastingInterval);
-                fastingInterval = setInterval(() => {
-                    if (fastingActive) {
-                        fastingSeconds++;
-                        updateTimerDisplay();
-                    }
-                }, 1000);
-            }
-
-            function updateFastingButton() {
-                if (!fastingBtn) return;
-                if (fastingActive) {
-                    fastingBtn.innerHTML = '<i class="fas fa-pause"></i> إيقاف الصيام';
-                    fastingBtn.classList.add('active');
-                } else {
-                    fastingBtn.innerHTML = '<i class="fas fa-play"></i> بدء الصيام';
-                    fastingBtn.classList.remove('active');
-                }
-            }
-
-            function toggleFasting() {
-                fastingActive = !fastingActive;
-
-                if (fastingActive) {
-                    fastingStartTime = Date.now();
-                    localStorage.setItem('mindVipFasting', 'active');
-                    localStorage.setItem('mindVipFastingStart', fastingStartTime);
-                    startTimerInterval();
-                } else {
-                    localStorage.setItem('mindVipFasting', 'inactive');
-                    localStorage.removeItem('mindVipFastingStart');
-                    if (fastingInterval) {
-                        clearInterval(fastingInterval);
-                        fastingInterval = null;
-                    }
-                }
-
-                updateFastingButton();
-                updateTimerDisplay();
-            }
-
-            if (fastingBtn) fastingBtn.addEventListener('click', toggleFasting);
-
-            // ==================== بدء التطبيق ====================
-            loadData();
-            renderTags();
-            updateTimerDisplay();
-            if (fastingActive) startTimerInterval();
-            updateFastingButton();
-            clearResult();
+            // إعادة الرسم عند تغيير حجم النافذة (اختياري)
+            window.addEventListener('resize', () => {
+                // لا حاجة لتغيير الكانفاس لأنه ثابت الحجم 400x400
+            });
         })();
     </script>
 </body>
